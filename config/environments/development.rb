@@ -41,7 +41,7 @@ Crowdfunding::Application.configure do
     :domain => "gmail.com",
     :authentication => "plain",
     :user_name => "cocreationserver@gmail.com",
-    :password => "cocreation",
+    :password => "",
     :enable_starttls_auto => true
  }
 
