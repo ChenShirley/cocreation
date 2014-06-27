@@ -1,0 +1,51 @@
+<div>
+  請依指示將以下空格填滿
+<%= form_for @setparam, :url => { :action => 'updatemodify', :id=>@setparam.id } do |f| %>
+
+    <%= '請填入團隊成員註冊的信箱：'%> 請勿填入自己的信箱</br>
+  </p>
+  <%= f.fields_for :members do |builder| %>
+    <%= render 'member_fields', :f => builder %>
+  <% end %>
+  <p><%= link_to_add_fields "Add Member", f, :members %></p>
+
+    <%= f.label :mentor_email, '指導者信箱：'%>
+    <%= f.text_field :mentor_email, :autocomplete=>"off", :value=>@setparam.mentor_email %></br>
+    
+    <%= f.label :keeper1_email, '初始提案審核者信箱：'%>
+    <%= f.text_field :keeper1_email, :autocomplete=>"off", :value=>@setparam.keeper1_email %></br>
+
+    <%= f.label :keeper2_email, '企劃修改審核者信箱：'%>
+    <%= vtext_field :keeper2_email, :autocomplete=>"off", :value=>@setparam.keeper2_email %></br>
+
+    <%= f.label :due0, '初始提案時限：'%>
+    <%= f.text_field :due0, :class=>"datepicker", :id=>"due0", :autocomplete=>"off", :value=>@setparam.due0 %></br>
+
+    <%= f.label :due1, '創意發想時限：'%>
+    <%= f.text_field :due1, :class=>"datepicker", :id=>"due1", :autocomplete=>"off", :value=>@setparam.due1 %></br>
+
+    <%= f.label :due2, '企劃修改時限：'%>
+    <%= f.text_field :due2, :class=>"datepicker", :id=>"due2", :autocomplete=>"off", :value=>@setparam.due2 %></br>
+
+    <%= f.label :due3, '正式募資時限：'%>   
+    <%= f.text_field :due3, :class=>"datepicker", :id=>"due3", :autocomplete=>"off", :value=>@setparam.due3 %></br>
+ 
+ 	<p><%= f.submit "儲存" %></p>
+<% end %>
+</div>
+
+<script>
+$(document).ready(function () {
+    $(".datepicker").datepicker({
+    		dateFormat: "yy-mm-dd",
+    		minDate: 1,
+    		showMonthAfterYear: true,
+    		showOtherMonths: true,
+    		selectOtherMonths: true,
+    		onSelect: function(date){
+    				this.focus();
+    				this.blur();
+    		}
+    });
+});
+</script>

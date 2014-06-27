@@ -1,0 +1,47 @@
+<div id="presubForm">
+  請依指示將以下空格填滿
+  <%= form_tag '/startaproject/newupdate/'+@start.id.to_s, :onsubmit => "return confirm('若有上傳封面圖片及專案內容檔案\n請記得點選兩者的上傳按鈕喔！');" , :method=>:put do %>
+    <%= error_messages_for @start %>
+    </br>     
+    <%= label :start, :name, '專案名稱：'%>
+    <%= text_field :start, :name, :value=>"啥東東" %></br>
+
+    <%= label :start, :classify, '專案類別：'%>
+    <select id="start_classify" name="start[classify]">
+      <option value="1">設計商品</option>
+      <option value="2">音樂影視</option>
+      <option value="3">舞台演出</option>
+      <option value="4">休閒娛樂</option>
+      <option value="5">創作出版</option>
+      <option value="6">社會文化</option>
+      <option value="7">科技應用</option>
+      <option value="8">美食饗宴</option>
+    </select>
+    </br>
+	
+		<iframe src=<%= "/upfile/picupload/#{@start.id}" %> width="100%" height="100" frameborder="0" border="0" cellspacing="0" style="border:none; float:left;"></iframe>
+
+    <%= label :start, :video, '專案影片：'%> （非必填欄位）若有影片請上傳至youtube後，取得影片嵌入碼並貼上，詳細做法請參考<%= link_to "使用說明","/project/aboutus" %>
+    <%= text_area :start, :video %>
+    </br>
+
+    <%= label :start, :goal, '專案目標：'%> 請直接輸入預計募資金額，最低為100元</br>
+    NTD$<%= text_field :start, :goal, :value=>"" %></br>
+    
+    <%= label :start, :intro, '團隊介紹：'%>
+    <%= text_area :start, :intro, :value=>"" %>
+    
+    <%= label :start, :describe, '專案摘要'%> 請勿超過255個字
+    <%= text_area :start, :describe, :value=>"" %>
+    </br>
+
+		<iframe src=<%= "/upfile/fileupload/#{@start.id}" %> width="100%" height="200" frameborder="0" border="0" cellspacing="0" style="border:none; float:left;"></iframe>
+
+    <%= hidden_field :start, :user_id, :value=>current_user.id%>
+
+    <center>
+			<%= submit_tag '下一步並儲存' %>
+    </center>
+    
+  <% end %>
+</div>

@@ -1,0 +1,22 @@
+<div id="feedbackForm">
+<%= form_for @start, :url => { :action => 'fupdate' } , :method=>:put do |f| %>
+  <%= f.error_messages %>
+  <p>
+	<h2>依以下指示新增回饋方案</h2>
+	<h3>回饋限制人數注意事項</h3>
+	＊若須限制人數，請務必在 <strong>是否有回饋限制人數</strong> 點選"是"</br>
+	＊回饋限制人數填寫範例：若限制10人，請直接輸入阿拉伯數字 10</br>
+	＊若無須設置限制人數， <strong>是否有回饋限制人數</strong> 請點選"否"，並將 <strong>回饋限制人數</strong> 留空</br>
+
+  </p>
+  <%= f.fields_for :feedbacks do |builder| %>
+    <%= render 'feedback_fields', :f => builder %>
+  <% end %>
+
+  <p><%= link_to_add_fields "新增回饋方案", f, :feedbacks %></p>
+
+ 	<p>
+    <input name="commit" type="submit" value="儲存並預覽", onclick="return confirm('請確認限制人數是否正確填寫\n儲存後將進入預覽畫面，可查看預覽決定要否修改內容')">
+	</p>
+<% end %>
+</div>

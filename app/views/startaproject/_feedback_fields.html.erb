@@ -1,0 +1,17 @@
+<div class="fields">
+	<p>
+		<%= f.label :money, "贊助金額：" %>
+		NTD$ <%= f.text_field :money %>
+		</br>
+		<%= f.label :plan, "回饋方案：" %>
+		<%= f.text_field :plan %>
+		</br>
+		<%= f.label :limit, "是否有回饋限制人數：" %>
+		<%= f.select :limit, [["否", false], ["是", true]] %>	
+		</br>
+		<%= f.label :amount, "回饋限制人數：" %> 若無回饋限制人數，請留空不用輸入
+		<%= f.text_field :amount %>
+		</br>
+			<%= link_to_remove_fields "移除此回饋方案", f %>
+	</p>
+</div>

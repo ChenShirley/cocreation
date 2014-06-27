@@ -1,0 +1,23 @@
+<table border=1>  
+<tr>
+	<td>檔名</td>
+	<td>格式</td>
+	<td>大小</td>
+	<td>日期</td>
+	<td>presub_id</td>
+	<td>專案名稱</td>
+</tr>  
+
+<% @files.each do |filelist| -%>  
+	<tr>  
+		<td><%= link_to @files.filename, "http://cocreation.ctm.nthu.edu.tw/files/"+filelist.filetoken.to_s -%></td>  
+
+		<td><%= filelist.filetype -%></td>  
+		<td><%= filelist.size -%></td>  
+		<td><%= filelist.created_at -%></td> 
+	 	<td><%= filelist.presub_id -%></td>
+		<td><%= filelist.presub_id.name -%></td>
+	<% end -%>  
+	</tr>  
+</table>  
+

@@ -1,0 +1,10 @@
+<div class="fields">
+  <p>
+			<%= f.label :email, "團隊成員信箱：" %>
+			<%= f.text_field :email %>
+	    <%= f.hidden_field :write, :value=>'0' %>
+			<%= link_to_remove_fields "移除此成員", f %>
+  </p>
+</div>
+
+

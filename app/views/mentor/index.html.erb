@@ -1,0 +1,81 @@
+<div id="index">
+	<div id="index_mine" align="center">
+【 給予輔導專案建議 】
+		<div>
+		  <table style="text-align: center;">
+		      <thead>
+		      	<th>專案名稱</th>
+		      	<th>提案者</th>
+						<th>目前進度</th>
+						<th>狀態</th>
+		      </thead>
+		      
+		      <tbody>
+		          <% @myteamproject.each do |on| -%>
+		              <tr>
+		              		<td><a href=<%= ideaindex_path(on.id) %>><%=on.name%></a></td>
+			                <td><%=on.user.name%></td>
+			                		<% case on.projectparam.nowstage %>
+													<%when 0 %>
+															<td>初始提案</td>
+									        		<% case on.confirm %>
+															<%when nil%>
+																	<td>請求審核</td>
+															<%when false %>
+																	<td><a href=<%= "startaproject/notconfirm/"+on.id.to_s %> title="查看未通過原因">未通過</a></td>
+															<% end %>
+													<%when 1 %>
+															<td>創意發想</td>
+															<td></td>
+													<%when 2 %>
+															<td>企劃修改</td>
+									        		<% case on.teacheron %>
+															<%when nil%>
+																	<td>請求審核</td>
+															<%when false %>
+																	<td><a href=<%= "startaproject/notconfirm/"+on.id.to_s %> title="查看未通過原因">未通過</a></td>
+															<% end %>
+													<% end %>
+		              </tr>
+		          <% end-%>         
+		      </tbody>
+		  </table>
+		</div>
+	</div>
+	
+	
+	<div id="index_nowinvest" align="center">
+【 輔導專案進度追蹤 】
+		<div>
+		  <table style="text-align: center;">
+		      <thead>
+	          <th>專案名稱</th>
+		      	<th>提案者</th>
+						<th>目前進度</th>
+		      </thead>
+		      
+		      <tbody>
+		          <% @trackproject.each do |now| -%>
+		              <tr>
+			                <td><a href=<%= reflashindex_path(now.pro.id) %>><%=now.name%></a></td>
+		              		<td><%=now.user.name%></td>
+			                		<% case now.projectparam.nowstage %>
+													<%when -1 %>
+															<% if now.confirm.nil? %>
+																	<td><a href=<%= "/startaproject/notconfirm/"+now.id.to_s %>>時限已過</a></td>
+															<% else %>
+																<td><a href=<%= "/startaproject/notconfirm/"+now.id.to_s %>>未通過</a></td>
+															<% end %>
+													<%when 3 %>
+															<td>正式募資</td>
+													<%when 4 %>
+															<td>後續追蹤</td>
+													<% end %>
+		              </tr>
+		          <% end-%>
+		      </tbody>
+		  </table>
+		</div>
+	</div>
+	
+</div>

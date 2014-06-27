@@ -1,0 +1,160 @@
+class ManagerController < ApplicationController
+  before_filter :authenticate_admin!
+  #每隔一天減少已上架專案中的天數
+	    #all = Pro.where("days > 0").all
+	    #data.update_attributes!(:days=>(data.goaldays-(Time.now.to_date-data.start.to_date).to_i))
+  t = Thread.new do
+    while(true) do
+      sleep 60
+#      all0 = Projectparam.where("restday0 > 0").all
+#      all0.each do |data|
+#      	if data.restday0 > 0 
+#		    	data.update_attributes!(:restday0=>(DateTime.parse(data.due0)-DateTime.now))
+#		    end
+#      end
+      all0 = Projectparam.where("nowstage = 0").all
+      all1 = Projectparam.where("nowstage = 1").all
+      all2 = Projectparam.where("nowstage = 2").all
+      all3 = Projectparam.where("nowstage = 3").all
+      all0.each do |data|
+    		if DateTime.parse(data.due0)-DateTime.now > 0
+	    		data.update_attributes!(:restday0=>(DateTime.parse(data.due0)-DateTime.now))
+	    	elsif DateTime.parse(data.due0)-DateTime.now <= 0
+	    		data.update_attributes!(:nowstage=>-1)
+		    end
+      end
+      
+      all1.each do |data|
+    		if DateTime.parse(data.due1)-DateTime.now > 0
+	    		data.update_attributes!(:restday1=>(DateTime.parse(data.due1)-DateTime.now))
+	    	elsif DateTime.parse(data.due1)-DateTime.now <= 0
+	    		data.update_attributes!(:nowstage=>2)
+		    end
+      end
+
+      all2.each do |data|
+    		if DateTime.parse(data.due2)-DateTime.now > 0
+	    		data.update_attributes!(:restday2=>(DateTime.parse(data.due2)-DateTime.now))
+	    	elsif DateTime.parse(data.due2)-DateTime.now <= 0
+	    		data.update_attributes!(:nowstage=>-1) #???
+		    end
+      end
+
+      all3.each do |data|
+    		if DateTime.parse(data.due3)-DateTime.now > 0
+	    		data.update_attributes!(:restday3=>(DateTime.parse(data.due3)-DateTime.now))
+	    	elsif DateTime.parse(data.due3)-DateTime.now <= 0
+	    		data.update_attributes!(:nowstage=>4)
+		    end
+      end
+
+      #all4 = Projectparam.includes(:presub).where("nowstage = 4 AND presub.pro.resultletter IS NULL").all
+			#all4.each do |data|
+			#通知提案者專案成功或失敗
+				#if data.presub.pro.goal>data.presub.pro.got #失敗
+			  #Usernotice.sendemail(data.user.email,'co-creation project information','Your project:'+@data.presub.name+' is failed. You do not get enough money.').deliver
+				#elsif data.presub.pro.goal<=data.presub.pro.got #成功
+			  #Usernotice.sendemail(data.user.email,'co-creation project information','Your project:'+@data.presub.name+' is success. Please contact your investors as soon as possible.').deliver
+				#end
+			#end
+
+
+    end
+  end
+
+
+  def index #管理員後台首頁
+    @errordelete = Projectparam.where("nowstage IS NULL").all	#管理員有權把草案刪掉&修改參數nowstage IS NULL OR
+    @alldelete = Projectparam.includes(:presub).where("nowstage IS NOT NULL").all	#管理員有權把草案刪掉&修改參數
+		#審核匯款
+    @check = Investment.includes(:pro).where("(confirm='f' OR confirm IS NULL) AND remit='t'")
+  end
+
+  def modify
+		@setparam = Projectparam.find(params[:id])
+  end
+
+  def updatemodify
+		@setparam = Projectparam.find(params[:id])
+		@setparam.update_attributes!(params[:projectparam])
+    if @setparam.save
+
+    #相對應的presub & pro
+    @pre = Presub.where(:projectparam_id=>@setparam.id)
+    @pro = Pro.where(:presub_id=>@pre[0].id)
+
+		member = Member.where("projectparam_id=?",@setparam.id)
+		#取得團隊成員的user_id，存回member
+		member = Member.where("projectparam_id=?",@setparam.id)
+    member.each do |set|
+			mid = User.where("email=?",set.email)
+  		set.update_attributes!(:user_id=>mid[0].id, :presub_id=>@pre[0].id, :pro_id=>@pro[0].id)
+    end
+
+			#運算天數差距
+		  restday0=DateTime.parse(@setparam.due0)-DateTime.now
+		  restday1=DateTime.parse(@setparam.due1)-DateTime.now
+		  restday2=DateTime.parse(@setparam.due2)-DateTime.now
+		  restday3=DateTime.parse(@setparam.due3)-DateTime.now
+		  @setparam.update_attributes!( :restday0=>restday0, :restday1=>restday1, :restday2=>restday2, :restday3=>restday3)
+
+    	#用email取得那位user的id，存回Projectparam
+		  @mentor = User.where("email=?",@setparam.mentor_email)
+		  @keeper1 = User.where("email=?",@setparam.keeper1_email)
+		  @keeper2 = User.where("email=?",@setparam.keeper2_email)
+		  @setparam.update_attributes( :mentor_id=>@mentor[0].id, :keeper1_id=>@keeper1[0].id, :keeper2_id=>@keeper2[0].id)
+
+    	#寄送邀請函
+		  #Usernotice.sendemail(@setparam.mentor_email,'co-creation 專案通知','系統通知，'+@pre[0].user.name+'的專案團隊邀請您成為專案【'+@pre[0].name+'】的指導者。請至Cocreation給予團隊指導！您可利用此網址回到Cocreation平台：http://cocreation.ctm.nthu.edu.tw/teacher').deliver
+		  #keeper1email = User.find(@keeper1[0].id).email
+		  #Usernotice.sendemail(@setparam.keeper1_email,'co-creation 專案通知','系統通知，'+@pre[0].user.name+'的專案團隊邀請您成為專案【'+@pre[0].name+'】的初始階段審核者。請至Cocreation審核其專案您可利用此網址回到Cocreation平台：http://cocreation.ctm.nthu.edu.tw/teacher。').deliver
+		  #keeper2email = User.find(@keeper2[0].id).email
+		  #Usernotice.sendemail(@setparam.keeper2_email,'co-creation 專案通知','系統通知，'+@pre[0].user.name+'的專案團隊邀請您成為專案【'+@pre[0].name+'】的企劃修改階段審核者，請隨時關注專案進度。您可利用此網址回到Cocreation平台：http://cocreation.ctm.nthu.edu.tw/teacher').deliver
+
+			redirect_to manager_index_path
+		end
+  end
+
+  def checkremit
+		#審核匯款
+		@check = Investment.find(params[:id])
+  end
+
+  def update
+		#審核匯款
+		@check = Investment.find(params[:id])
+		@check.update_attributes!(params[:invest])
+    @feedback = Feedback.where(:id=>@check.feedback_id)
+		if @check.confirm
+			#審核好之後把總金額及總贊助人數加上去
+	    sum = @check.pro.got.to_i + @check.howmuch.to_i
+  	  @check.pro.update_attributes(:got=>sum)
+			@feedback[0].update_attributes(:investamount=>@feedback[0].investamount.to_i + 1)
+
+      Usernotice.sendemail(@check.user.email,'co-creation 專案通知','我們已收到你的匯款。你投資的專案：'+@check.pro.presub.name+' 募資金額已被更新。請您持續關注此專案，如有專案相關問題，請隨時與專案發起人'+@check.pro.presub.user.name+'('+@check.pro.presub.user.email+')保持聯繫。您可利用此網址回到Cocreation平台查看您的投資資訊：http://cocreation.ctm.nthu.edu.tw/startaproject/newindex').deliver
+    	redirect_to manager_index_path
+		end
+  end
+
+  def deletepresub	#管理員有權把keeper2尚未審核的草案刪掉	
+		@delete = params[:id] #projectparam_id
+
+		#刪除草案同時，刪除此專案上傳的所有檔案 
+		@dlfile = Upfile.where(:projectparam_id=>@delete).all
+		@dlfile.each do |deletefile|
+			if deletefile.usage=="summary"
+				File.delete("/home/tdog/crowdfunding-master/public/files/#{deletefile.filetoken}") 
+			elsif deletefile.usage=="pic"
+				File.delete("/home/tdog/crowdfunding-master/app/assets/images/#{deletefile.filetoken}")
+			end
+		end
+    Projectparam.destroy(params[:id])
+    redirect_to manager_index_path
+  end
+
+  def saveaskforhelp	#事求人pdf上傳功能
+    Askforhelp.create(params[:ask])
+    redirect_to root_path
+  end
+
+end

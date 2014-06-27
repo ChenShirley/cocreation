@@ -1,0 +1,9 @@
+class Pro < ActiveRecord::Base
+  attr_accessible :id, :classify, :got, :start, :teacheron, :presub_id, :user_id, :resultletter
+ 
+  belongs_to :user
+  belongs_to :presub
+  has_many :investments, :dependent => :destroy
+  has_many :questions, :dependent => :destroy
+  has_many :stories, :dependent => :destroy
+end

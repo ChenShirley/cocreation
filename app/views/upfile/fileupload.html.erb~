@@ -1,0 +1,5 @@
+<%= form_tag({:action=>'save_file', :id=>@start.id}, :multipart => true)%>  
+	專案內容：可接受檔案格式為pdf、word</br>
+	<input type="file" name="filename" />
+	<input type="submit" name="Upload" value="上傳專案內容檔案" />
+</form>

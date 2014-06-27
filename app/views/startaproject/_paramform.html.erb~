@@ -1,0 +1,89 @@
+<div id="paramForm" style="border:none; float:left; width:60%;">
+  請依指示將以下空格填滿
+<%= form_for @setparam, :url => { :action => 'update' } do |f| %>
+  <%= f.error_messages %>
+
+	<h2>步驟一：組成團隊</h2>
+  <h3>請填入團隊成員的信箱</h3>
+	＊您目前的身份為團隊組長，為專案對外公開聯絡人</br>
+	＊團隊組長已預設為團隊成員之一，因此請勿新增自己的信箱</br>
+	＊請點選『新增團隊成員』組成團隊，並將組員於cocreation平台註冊時的信箱填入</br>
+	＊若不確定組員信箱正確與否，可利用右方的查詢功能</br>
+	＊信箱格式不分大小寫，但填入時請注意信箱前後不要有空格，以免造成錯誤</br>
+  <%= f.fields_for :members do |builder| %>
+    <%= render 'member_fields', :f => builder %>
+  <% end %>
+  <p><%= link_to_add_fields "新增團隊成員", f, :members %></p>
+
+	<h2>步驟二：專案時程設定</h2>
+  <h3>請填入募資截止時間</h3>
+	＊當您填寫完此頁及接下來兩個頁面的專案內容設定，即可馬上進行預覽</br>
+	＊預覽時若發現內容需要修改，請點選編輯</br>
+	＊編輯完成確認無誤後，請點選送出，一旦送出則正式開始進行募資，無法再次更改專案內容</br>
+	＊若開始募資後，發現有錯字或其他問題，請與平台管理員聯絡，管理員會視情況幫忙修改</br>
+	（平台管理員：<a href="mailto:cocreation.nthu@gmail.com">cocreation.nthu@gmail.com</a>）</br>
+	</br>
+
+<!--
+    <%= f.label :mentor_email, '指導者信箱：'%>
+    <%= f.text_field :mentor_email, :autocomplete=>"off" %></br>
+    
+    <%= f.label :keeper1_email, '初始提案審核者信箱：'%>
+    <%= f.text_field :keeper1_email, :autocomplete=>"off" %></br>
+
+    <%= f.label :keeper2_email, '企劃修改審核者信箱：'%>
+    <%= f.text_field :keeper2_email, :autocomplete=>"off" %></br>
+
+    <%= f.label :due0, '初始提案時限：'%> 創意發想開始時間，在此時限結束之前，記得提醒審核者審核你的專案</br>
+    <%= f.text_field :due0, :class=>"datepicker", :id=>"due0", :autocomplete=>"off" %></br>
+
+    <%= f.label :due1, '創意發想時限：'%> 企劃修改開始時間，在此時限結束之前，可以邀請親朋好友給予意見回饋</br>
+    <%= f.text_field :due1, :class=>"datepicker", :id=>"due1", :autocomplete=>"off" %></br>
+
+    <%= f.label :due2, '企劃修改時限：'%> 募資開始時間</br>
+    <%= f.text_field :due2, :class=>"datepicker", :id=>"due2", :autocomplete=>"off" %></br>
+-->
+    <%= f.label :due3, '募資截止時間：'%> </br>
+		範例：選擇2013年12月31日，表示募資將會於2013年12月30日23時59分59秒截止</br>
+    <%= f.text_field :due3, :class=>"datepicker", :id=>"due3", :autocomplete=>"off" %></br>
+
+    <%= f.hidden_field :user_id, :value=>current_user.id%>
+
+    <%= f.hidden_field :mentor_email, :value=>"shirley_0720@hotmail.com" %>
+    <%= f.hidden_field :keeper1_email, :value=>"shirley_0720@hotmail.com" %>
+    <%= f.hidden_field :keeper2_email, :value=>"shirley_0720@hotmail.com" %>
+
+<!--
+		<%= f.label :due0, '初始提案時限：'%> 創意發想開始時間，在此時限結束之前，記得提醒審核者審核你的專案</br>
+    <%= f.label :due1, '創意發想時限：'%> 企劃修改開始時間，在此時限結束之前，可以邀請親朋好友給予意見回饋</br>
+    <%= f.label :due2, '企劃修改時限：'%> 募資開始時間</br>
+-->
+    <%= f.hidden_field :due0, :value=>"#{DateTime.now.strftime('%Y-%m-%d')}" %>
+    <%= f.hidden_field :due1, :value=>"#{DateTime.now.strftime('%Y-%m-%d')}" %>
+    <%= f.hidden_field :due2, :value=> "#{(DateTime.now+20).strftime('%Y-%m-%d')}" %>
+
+ 			 <p>
+				<input name="submit" type="submit" value="下一步並儲存", onclick="return confirm('請記得確認所有欄位皆填寫完畢，並確認您所填寫的信箱皆是正確的喔！\n若不確定信箱正確與否，可利用查詢功能。')">
+			</p>
+			<% # f.submit "下一步並儲存" %>
+
+<% end %>
+</div>
+
+<iframe src="/startaproject/param/search" width="40%" height="500" frameborder="0" border="0" cellspacing="0" style="border:none; float:left;"></iframe>
+
+<script>
+$(document).ready(function () {
+    $(".datepicker").datepicker({
+    		dateFormat: "yy-mm-dd",
+    		minDate: 1,
+    		showMonthAfterYear: true,
+    		showOtherMonths: true,
+    		selectOtherMonths: true,
+    		onSelect: function(date){
+    				this.focus();
+    				this.blur();
+    		}
+    });
+});
+</script>

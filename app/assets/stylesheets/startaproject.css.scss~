@@ -1,0 +1,299 @@
+// Place all the styles related to the startaproject controller here.
+// They will automatically be included in application.css.
+// You can use Sass (SCSS) here: http://sass-lang.com/
+.ste .bar { background: #ECE9D8; padding: 3px; border: #ACA899 1px; border-style: solid solid none solid; }
+.ste .frame { border: 1px solid; border-color: #716F64 #ECE9D8 #ECE9D8 #716F64;  overflow: visible; }
+.ste .frame iframe { width: 600px; height: 600px; overflow: visible; }
+.ste img { border: 0; }
+.ste .button { padding: 1px; border: #ECE9D8 1px solid; }
+.ste .button-hover { padding: 1px; border: 1px solid; border-color: #ffffff #ACA899 #ACA899 #ffffff; }
+.ste .button-click { padding: 1px; border: 1px solid; border-color: #ACA899 #ffffff #ffffff #ACA899; }
+.ste .separator { width: 0px; height: 18px; border-left: #aca899 1px solid; border-right: #ffffff 1px solid; margin: 0 5px; }
+.ste .source { padding-top: 5px; }
+
+img{
+	border:0px;
+}
+
+#presubForm {
+  width:800px;
+  margin: 0 auto;
+
+}
+
+#presubForm label{
+  width:200px;
+  font-family:微軟正黑體;
+  font-size:15pt;
+}
+#start_Pname{
+  width:600px;
+  -webkit-border-radius: 5px;
+  -moz-border-radius: 5px;
+  border-radius:5px;
+  box-shadow:0px 0px 0.5px #000;
+  font-size:17px;
+  margin-bottom:10px;
+  border-style:inset;
+  border-width:medium;  
+}
+
+#start_Pclassify{
+  width:600px;
+  -webkit-border-radius: 5px;
+  -moz-border-radius: 5px;
+  border-radius:5px;
+  box-shadow:0px 0px 0.5px #000;
+  font-size:17px;  
+  margin-bottom:10px;
+  border-style:inset;
+  border-width:medium;  
+}
+
+#start_Pgoal{
+  width:600px;
+  -webkit-border-radius: 5px;
+  -moz-border-radius: 5px;
+  border-radius:5px;
+  box-shadow:0px 0px 0.5px #000;
+  font-size:20px;  
+  margin-bottom:10px;
+  border-style:inset;
+  border-width:medium;  
+}
+
+#presubForm textarea{
+  -webkit-border-radius: 7px;
+  -moz-border-radius: 7px;
+  border-radius:7px;
+  border-style:inset;
+  height:150px;
+  width:800px; 
+  box-shadow:0px 0px 2px #000;
+  font-size:24px; 
+  margin-bottom:10px;
+  border-style:inset;
+ 
+}
+
+#button-id{
+  cursor: pointer; 
+  -webkit-border-radius: 5px;
+  -moz-border-radius: 5px;
+  border-radius:5px;
+}
+
+#content-all{
+  font-family: "微軟正黑體";
+    width:100%;
+    height:auto;
+    background-color:#FFFFFF;
+    margin-top:20px;
+
+}
+
+#uncheck{	//myindex管理員未審核
+  margin:5px;
+  padding-top:5px;
+  float:left;
+  width:30%;
+  height: auto;
+  border-radius: 10px;
+  box-shadow: 0px 0px 12px 1px rgba(20%,20%,40%,0.5);
+  background-color:white;
+  border-color:white;
+  border-style:solid;
+}
+
+#checkOK{	//myindex後續編輯
+  margin:5px;
+  padding-top:5px;
+  float:left;
+  width:35%;
+  height: auto;
+  border-radius: 10px;
+  box-shadow: 0px 0px 12px 1px rgba(20%,20%,40%,0.5);
+    background-color:white;
+  border-color:white;
+  border-style:solid;
+}
+
+#alreadyOK{	//myindex已上架
+  margin:5px;
+  padding-top:5px;
+  float:left;
+  width:30%;
+  height: auto;
+  border-radius: 10px;
+  box-shadow: 0px 0px 12px 1px rgba(20%,20%,40%,0.5);
+  background-color:white;
+  border-color:white;
+  border-style:solid;
+
+}
+
+#answer_context{
+  width:90%;
+  height:60px;
+}
+
+#newProject{	//新增企劃
+  margin-right:60px;
+  width:100px;
+  text-align:center;
+  height:50px;
+  line-height: 50px;
+  border-radius: 5px;   
+  margin-top: 10px;
+  border-radius: 10px;
+  box-shadow: 0px 0px 15px 2px rgba(20%,20%,40%,0.5);
+ background-color:#d44413;
+}
+
+#newProject a{
+  list-style-type:none;
+  font-size: 18px; 
+  color:white;
+  text-decoration: none;
+}
+#newProject a:hover{
+  color:#FF4500;
+}
+
+#main_authorizep{
+  width:600px;
+  margin: 0 auto;
+  font-size:11pt;
+  font-family:微軟正黑體;
+  
+}
+
+#main_authorizep label{
+  width:100px;
+  font-size:13pt;
+  font-family:微軟正黑體;
+  color:block;
+}
+
+#content_Ppic{
+  width:500px;
+  -webkit-border-radius: 5px;
+  -moz-border-radius: 5px;
+  border-radius:5px;
+  box-shadow:0px 0px 0.5px #000;
+}
+
+#content_Pdescribe{
+  width:500px;
+  -webkit-border-radius: 5px;
+  -moz-border-radius: 5px;
+  border-radius:5px;
+  box-shadow:0px 0px 0.5px #000;
+}
+
+#main_authorizep textarea{
+  -webkit-border-radius: 7px;
+  -moz-border-radius: 7px;
+  border-radius:7px;
+  border-style:inset;
+  height:150px;
+  width:600px; 
+  box-shadow:0px 0px 2px #000;
+}
+
+#list{
+  width:60%;
+  height: auto;
+  margin:0 auto;
+  font-family: 微軟正黑體;
+  box-shadow: 0px 0px 16px 8px rgba(51, 51, 102, 0.5);
+  border-radius: 10px;
+  border-style:solid;
+  border-width:20px;
+  border-color:white;
+  background-color: white;
+}
+
+#myinvest{
+  width:40%;
+  height: auto;
+  margin:0 auto;
+  font-family: 微軟正黑體;
+  box-shadow: 0px 0px 16px 8px rgba(51, 51, 102, 0.5);
+  border-radius: 10px;
+  border-style:solid;
+  border-width:20px;
+  border-color:white;
+  background-color: white;
+}
+
+//for preview
+#preshowname {
+  margin-top:80px;
+  height: 70px;
+  margin: 0 auto;
+  font-size: 40pt;
+  font-family: 微軟正黑體;
+  text-align:center;
+  color: #F07830;
+
+}
+#preshowemail{
+  clear:both;
+  margin:0 auto;
+  text-align:center;
+  font-family: 微軟正黑體; 
+  font-size:20px;
+  color:#607B8B;
+  margin-bottom:20px;
+}
+#preshowcontext {
+  clear:both;
+  width: 95%;
+  height: auto;
+  margin: 0 auto;
+  box-shadow: 0px 0px 12px 5px rgba(51, 51, 102, 0.5);
+  border-radius: 10px;
+  border-style:solid;
+  border-width:20px;
+  border-color:white;
+  background-color: white;
+  overflow:hidden;
+  
+}
+#preshowmedia {
+  float: left;
+  width: 100%;
+  border-style: solid;
+  border-color: white;
+  border-width: 5px;
+}
+#preshowinfo a { color:white;}
+#preshowinfo a:hover {color:#CCCCCC} 
+#preshowinfo {
+  margin-top:10px;
+  width: 350px;
+  min-height: 150px;
+  background-color:#F8E6D4;
+  border-style: solid;
+  border-color: #F8E6D4;
+  border-width: 15px;
+  border-radius: 10px; 
+  font-size: 30pt;
+  font-family: 微軟正黑體;
+}
+#preshowteam, #preshowfeedback {
+  clear:both;
+  margin-top:10px;
+  width: 350px;
+  height: auto;
+  background-color:#F8E6D4;
+  border-style: solid;
+  border-color: #F8E6D4;
+  border-width: 15px;
+  border-radius: 10px;
+  font-family: 微軟正黑體;
+}
+#preshowsummary {
+  width: 800px;
+}

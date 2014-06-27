@@ -1,0 +1,191 @@
+<center>
+	<a href="param">
+		<img src="http://i.imgur.com/mJXnd6N.png" style="width:50px;">
+		</br>
+		<span style="font-size:20px; font-weight:bold; color:black;">新增企劃</span>
+	</a>
+</center>
+
+
+<center>
+<div id="content-all" align="center">
+	
+	<div id="uncheck">
+		【 初始提案 】
+		<hr style="width: 80%; border-color:#CCCCCC;border:0.5;">
+		<table style="text-align: center;">
+		      <thead>
+	          <th>專案名稱</th>
+	          <th>提案者</th>
+	          <th>狀態</th>
+	          <th>管理</th>
+		      </thead>
+
+		      <tbody>
+		          <% @userpresubunconfirm.each do |m| %>
+									<% @reason_unconfirm = Reason.includes(:presub).where("reasons.presub_id=?",m.id).all %>
+		              <tr>
+			                <td><a href=<%= "preview/"+m.id.to_s %>><%=simple_format m.name%></a></td>
+			                <td><%= m.user.name%></td>
+			                		<% if m.projectparam.nowstage.to_s=='-2'%>
+															<td>尚未送出審核</td>
+													<% elsif m.projectparam.nowstage.to_s=='-1' and m.confirm.nil? %>
+															<td>時限已過</td>
+													<% else %>
+															<% case m.confirm %>
+															<%when nil%>
+																	<td>請求審核</td>
+															<%when false %>
+																	<td><a href=<%= "notconfirm/"+@reason_unconfirm[0].presub_id.to_s %> title="查看未通過原因">未通過</a></td>
+															<% end %>
+													<% end %>
+											<td>
+													<% if m.projectparam.nowstage.to_s=='-2'%>
+															<a href=<%= "authorizep/"+m.id.to_s %>>編輯</a>
+															<%=link_to "送出審核通知",'inform/'+m.id.to_s, :method => :put, :confirm => '您確定要送出審核通知？'%>
+													<%end%>
+													<%=link_to "delete",'/startaproject/deletepresub/'+m.projectparam.id.to_s, :method => :put, :confirm => '您確定要刪除此專案？'%>
+											</td>
+		              </tr>
+		          <% end-%>
+
+		          <% @m_userpresubunconfirm.each do |m| %>
+									<% @m_reason_unconfirm = Reason.includes(:presub).where("reasons.presub_id=?",m.presub.id).all %>
+		              <tr>
+			                <td><a href=<%= "preview/"+m.presub.id.to_s %>><%=simple_format m.presub.name%></a></td>
+			                <td><%= m.presub.user.name%></td>
+			                		<% if m.presub.projectparam.nowstage.to_s=='-2'%>
+															<td>尚未送出審核</td>
+													<% else %>
+															<% case m.presub.confirm %>
+															<%when nil%>
+																	<td>請求審核</td>
+															<%when false %>
+																	<td><a href=<%= "notconfirm/"+@m_reason_unconfirm[0].presub_id.to_s %> title="查看未通過原因">未通過</a></td>
+															<% end %>
+													<% end %>
+											<td>
+													<% if m.projectparam.nowstage.to_s=='-2'%>
+															<a href=<%= "authorizep/"+m.presub.id.to_s %>>編輯</a>
+															<%=link_to "送出審核通知",'inform/'+m.presub.id.to_s, :method => :put, :confirm => '您確定要送出審核通知？'%>
+													<%end%>
+													<%=link_to "delete",'/startaproject/deletepresub/'+m.projectparam.id.to_s, :method => :put, :confirm => '您確定要刪除此專案？'%>
+											</td>
+		              </tr>
+		          <% end-%>
+		      </tbody>
+		  </table>
+	</div>
+
+	<div id="checkOK">
+		【 創意發想及企劃修改 】
+		<hr style="width: 80%; border-color:#CCCCCC;border:0.5;">
+		<div id="projectUp" style=" width: 100%;">
+  		<table style="text-align: center;">
+		      <thead>
+	          <th>專案名稱</th>
+	          <th>提案者</th>
+	          <th>狀態</th>
+	          <th>管理</th>
+		      </thead>
+		      
+		      <tbody>
+		          <% @userproject.each do |all| %>
+									<% @reason = Reason.includes(:presub).where("reasons.presub_id=?",all.presub.id).all %>
+		              <tr>
+			                <td><%=simple_format all.presub.name%></td>
+			                <td><%= all.presub.user.name%></td>
+											<% if all.nowstage.to_s=='2'%>
+			                		<% case all.presub.teacheron %>
+													<%when nil%>
+															<td>請求審核</td>
+													<%when false %>
+															<td><a href=<%= "notconfirm/"+@reason[0].presub_id.to_s %> title="查看未通過原因">未通過</a></td>
+													<% end %>
+											<% else%>
+													<td>創意發想</td>
+											<% end %>
+											<td>
+													<% if all.nowstage.to_s=='1'%>
+															<a href=<%= ideaindex_path(all.presub.id) %>>回覆</a>
+													<% elsif all.nowstage.to_s=='2'%>
+															<a href=<%= "authorizep/"+all.presub.id.to_s %>>編輯</a>
+															<a href=<%= ideaindex_path(all.presub.id) %>>回覆</a>
+															<a href=<%= "inform/"+all.presub.id.to_s %>>送出審核通知</a>
+													<% else%>
+													編輯  回覆
+													<%end%>
+											</td>
+		              </tr>
+		          <% end-%>
+
+		          <% @m_userproject.each do |all| %>
+									<% @m_reason = Reason.includes(:presub).where("reasons.presub_id=?",all.presub.id).all %>
+		              <tr>
+			                <td><%=simple_format all.presub.name%></td>
+			                <td><%= all.presub.user.name%></td>
+											<% if all.presub.projectparam.nowstage.to_s=='2'%>
+			                		<% case all.presub.teacheron %>
+													<%when nil%>
+															<td>請求審核</td>
+													<%when false %>
+															<td><a href=<%= "notconfirm/"+@m_reason[0].presub_id.to_s %> title="查看未通過原因">未通過</a></td>
+													<% end %>
+											<% else%>
+													<td>創意發想</td>
+											<% end %>
+											<td>
+													<% if all.projectparam.nowstage.to_s=='1'%>
+															<a href=<%= ideaindex_path(all.presub.id) %>>回覆</a>
+													<% elsif all.projectparam.nowstage.to_s=='2'%>
+															<a href=<%= "authorizep/"+all.presub.id.to_s %>>編輯</a>
+															<a href=<%= ideaindex_path(all.presub.id) %>>回覆</a>
+															<a href=<%= "inform/"+all.presub.id.to_s %>>送出審核通知</a>
+													<% else%>
+													編輯  回覆
+													<%end%>
+											</td>
+		              </tr>
+		          <% end-%>
+		      </tbody>
+		  </table>
+  	</div>
+	</div>
+
+
+	<div id="alreadyOK">
+		【 正式募資及後續追蹤 】
+		<hr style="width: 80%; border-color:#CCCCCC;border:0.5;">
+	
+  		<table style="text-align: center;">
+		      <thead>
+	          <th>專案名稱</th>
+	          <th>提案者</th>
+	          <th>查看內容</th>
+						<th>贊助名單</th>
+		      </thead>
+		      
+		      <tbody>
+		          <% @userproon.each do |m| %>
+		              <tr>
+			                <td><%=simple_format m.presub.name%></td>
+			                <td><%= m.presub.user.name%></td>
+			                <td><%= link_to "details","/reflashindex/"+m.id.to_s %></td>
+			                <td><%= link_to "lists","/startaproject/investlist/"+m.id.to_s %></td>
+		              </tr>
+		      		<%end%>
+
+		          <% @m_userproon.each do |m| %>
+		              <tr>
+			                <td><%=simple_format m.presub.name%></td>
+			                <td><%= m.presub.user.name%></td>
+			                <td><%= link_to "details","/reflashindex/"+m.presub.pro.id.to_s %></td>
+			                <td><%= link_to "lists","/startaproject/investlist/"+m.presub.pro.id.to_s %></td>
+		              </tr>
+		      		<%end%>
+		      </tbody>
+		  </table>
+	</div>
+	
+</div>
+</center>

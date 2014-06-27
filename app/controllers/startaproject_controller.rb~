@@ -1,0 +1,273 @@
+class StartaprojectController < ApplicationController
+  before_filter :authenticate_user!
+  
+  def index	#使用者後台 我的專區首頁，分成兩塊
+  end
+   
+  def newindex	#我的贊助，列出投資的專案的投資金額、專案狀態
+		#尚未匯款&已匯款完成
+    @alldone = Investment.includes(:pro).where("user_id=? AND (remit='t' OR remit IS NULL)",current_user.id)
+  end
+
+  def deleteinvest
+		
+		@invest = Investment.find(params[:id])
+		if @invest.remit
+		@invest.destroy(params[:id])
+    redirect_to manager_index_path
+		else
+    redirect_to startaproject_newindex_path
+		end		
+  end
+
+	def remit	#我的贊助,回報匯款資料
+    @set = Investment.find(params[:id])
+	end
+
+	def updateremit
+		@set = Investment.find(params[:id])
+		@set.update_attributes!(params[:set])
+		if @set.save
+			@set.update_attributes!( :remit=>true)
+    	redirect_to startaproject_newindex_path
+		end
+	end
+
+  def myindex	#我的專案，列出自己提出的專案
+		#自己提出的專案(leader) & 自己提出，但自己是團隊成員之一的
+
+		#未審核，取由自己提出的專案中，keeper1(管理員)審核不通過(可按detail看原因或delete刪除該專案)或是尚未被審核的
+    @userpresubunconfirm = Presub.where("user_id=? AND (confirm=? OR confirm IS NULL)",current_user.id,false).all
+    @m_userpresubunconfirm = Member.includes(:projectparam).includes(:presub).where("members.user_id=? AND (presubs.confirm=? OR presubs.confirm IS NULL)",current_user.id,false).all
+
+		#後續編輯，keeper1通過，第一階段開始蒐集意見，第二階段可編輯
+    @userproject = Projectparam.includes(:presub).where("presubs.user_id=? AND (projectparams.nowstage=? OR projectparams.nowstage=?)",current_user.id,1,2).all
+    @m_userproject = Member.includes(:projectparam).includes(:presub).where("members.user_id=? AND (projectparams.nowstage=? OR projectparams.nowstage=?) ",current_user.id,1,2).all
+
+		#已上架，keeper2通過，第三階段開始募資
+    @userproon = Pro.where(:teacheron=>true, :user_id=>current_user.id).all
+    @m_userproon = Member.includes(:projectparam).includes(:presub).includes(:pro).where("projectparams.nowstage=? AND members.user_id=?",3,current_user.id).all
+
+    @question = Questionforidea.where(:show=>true)
+  end
+
+	def investlist	#我的提案,給提案者看目前贊助列表
+		@list = Investment.includes(:pro).where("pro_id=?",params[:id])
+	end
+
+  def deletepresub	#自己有權把未被管理員審核通過的草案刪掉(未通過會在detail<連到notconfirm>中顯示原因)	
+
+		@delete = params[:id] #projectparam_id
+
+		#刪除草案同時，刪除此專案上傳的所有檔案 
+		@dlfile = Upfile.where(:projectparam_id=>@delete).all
+		@dlfile.each do |deletefile|
+			if deletefile.usage=="summary"
+				File.delete("/home/tdog/crowdfunding-master/public/files/#{deletefile.filetoken}") 
+			elsif deletefile.usage=="pic"
+				File.delete("/home/tdog/crowdfunding-master/app/assets/images/#{deletefile.filetoken}")
+			end
+		end
+
+		Projectparam.destroy(params[:id])
+    redirect_to startaproject_myindex_path
+  end
+
+  def notconfirm	#未被審核通過的專案內容(多一個未被審核通過原因的顯示欄位)
+    @presub = Presub.includes(:projectparam).find(params[:id])
+    @feedback = Feedback.order("money ASC").where(:presub_id=>@presub.id).all
+		@files = Upfile.where("id=? AND currentuse=? AND usage=?",@presub.upfile_id,true,'summary')
+  end
+
+	def searchresult
+		search = params[:user][:name].downcase
+
+		@search = User.where("name=? OR email=?",search,search)
+		render :layout => false
+	end
+
+	def search
+		render :layout => false
+	end
+
+  def param	#設每一個presub的變數(mentor、keeper、時限)
+    @setparam = Projectparam.new		
+  end
+
+  def update	#param設好之後一併產生相對應的presub,並將頁面指向new以便設定presub的詳細內容
+
+    @setparam = Projectparam.create(params[:projectparam])
+    if @setparam.save
+
+			#運算天數差距
+		  restday0=DateTime.parse(@setparam.due0)-DateTime.now
+		  restday1=DateTime.parse(@setparam.due1)-DateTime.now
+		  restday2=DateTime.parse(@setparam.due2)-DateTime.now
+		  restday3=DateTime.parse(@setparam.due3)-DateTime.now
+		  @setparam.update_attributes!( :restday0=>restday0, :restday1=>restday1, :restday2=>restday2, :restday3=>restday3)
+
+    	#用email取得那位user的id，存回Projectparam
+			mentor = @setparam.mentor_email.downcase
+			keeper1 = @setparam.keeper1_email.downcase
+			keeper2 = @setparam.keeper2_email.downcase
+		  @mentor = User.where("email=?",mentor)
+		  @keeper1 = User.where("email=?",keeper1)
+		  @keeper2 = User.where("email=?",keeper2)
+
+			if @mentor[0].nil? or @keeper1[0].nil? or @keeper2[0].nil?
+				if @mentor[0].nil? and @keeper1[0].nil? and @keeper2[0].nil?
+					flash.now[:alert] = "指導者及初始提案及企劃修改審核者設定錯誤"
+				elsif @mentor[0].nil? and @keeper1[0].nil?
+					flash.now[:alert] = "指導者及初始提案審核者設定錯誤"
+				elsif @mentor[0].nil? and @keeper2[0].nil?
+					flash.now[:alert] = "指導者及企劃修改審核者設定錯誤"
+				elsif @keeper1[0].nil? and @keeper2[0].nil?
+					flash.now[:alert] = "初始提案及企劃修改審核者設定錯誤"
+				elsif @mentor[0].nil?
+					flash.now[:alert] = "指導者設定錯誤"
+				elsif @keeper1[0].nil?
+					flash.now[:alert] = "初始提案審核者設定錯誤"
+				elsif @keeper2[0].nil?
+					flash.now[:alert] = "企劃修改審核者設定錯誤"
+				end
+    		render :action => :param
+			else
+		  	@setparam.update_attributes( :mentor_id=>@mentor[0].id, :keeper1_id=>@keeper1[0].id, :keeper2_id=>@keeper2[0].id)      
+				flash[:notice] = "恭喜您參數設定成功，請繼續編輯提案內容"
+
+      #產生相對應的presub & pro
+      Presub.create( :user_id=>@setparam.user_id, :projectparam_id=>@setparam.id, :name=>0, :classify=>0, :goal=>0, :intro=>0, :describe=>0, :confirm=>true)
+      @pre = Presub.includes(:projectparam).where(:projectparam_id=>@setparam.id)
+			@pre[0].projectparam.update_attributes!(:nowstage=>1)
+
+			Pro.create(:presub_id=>@pre[0].id)
+      @pro = Pro.where(:presub_id=>@pre[0].id).all
+
+			#取得團隊成員的user_id，存回member
+			member = Member.where("projectparam_id=?",@setparam.id)
+      member.each do |set|
+				m_email = set.email.downcase
+				mid = User.where("email=?",m_email)
+    		set.update_attributes!(:user_id=>mid[0].id, :presub_id=>@pre[0].id, :pro_id=>@pro[0].id)
+      end
+			redirect_to :action => "new", :id => @pre[0].id
+      end
+		else
+			flash.now[:alert] = "參數設定錯誤"
+    	render :action => :param
+    end
+  end
+  
+  def new	#編輯一個前置專案
+    @start = Presub.find(params[:id])
+  end
+
+  def newupdate	#編輯一個前置專案
+    @start = Presub.find(params[:id])
+    @start.update_attributes!(params[:start])
+    if @start.save
+			redirect_to :action => "feedbackcreate", :id => @start.id
+    end
+  end
+
+  def feedbackcreate	#編輯一個前置專案
+    @start = Presub.find(params[:id])
+		@feedback = Feedback.order("money ASC").where(:presub_id=>@start.id).all
+  end
+
+  def fupdate	#update前置專案，正式進入第0階段，等待keeper1審核
+    @start = Presub.includes(:projectparam).find(params[:id])
+    @start.update_attributes!(params[:presub])
+		if @start.confirm.nil? #初始提案階段
+				if @start.save
+					Reason.create( :user_id=>@start.user_id, :presub_id=>@start.id)
+					@start.projectparam.update_attributes!(:nowstage=>-2)
+
+					#存回feedback
+					setfeedback = Feedback.where("presub_id=?",@start.id)
+				  setfeedback.each do |set|
+						set.update_attributes!(:user_id=>current_user.id, :projectparam_id=>@start.projectparam_id, :pro_id=>@start.pro.id)
+				  end
+					redirect_to startaproject_myindex_path
+				end
+
+		elsif @start.confirm==true && @start.teacheron!=true	#企劃修改階段
+				@start.projectparam.update_attributes!(:nowstage=>2)
+				if @start.save
+					#存回feedback
+					setfeedback = Feedback.where("presub_id=?",@start.id)
+				  setfeedback.each do |set|
+						set.update_attributes!(:user_id=>current_user.id, :projectparam_id=>@start.projectparam_id, :pro_id=>@start.pro.id)
+				  end
+					redirect_to :action=>'preview', :id=>@start.id
+				end
+		end
+  end
+
+  def preview
+    @presub = Presub.includes(:projectparam).find(params[:id])
+		@files = Upfile.where("id=? AND currentuse=? AND usage=?",@presub.upfile_id,true,'summary')
+		@pics = Upfile.where("id=? AND currentuse=? AND usage=?",@presub.pic,true,'pic')
+		@feedback = Feedback.order("money ASC").where(:presub_id=>@presub.id).all
+  end
+
+	def passtoinvest
+    @confirm = Presub.includes(:projectparam).includes(:pro).find(params[:id])
+    @confirm.update_attributes!(:teacheron=>true)
+	  @confirm.projectparam.update_attributes!(:nowstage=>3)
+    @confirm.pro.update_attributes!(:resultletter=>false, :got=>0, :classify=>@confirm.classify, :teacheron=>true, :user_id=>@confirm.user_id, :start=>Time.now)
+    Usernotice.sendemail(User.find(@confirm.user_id).email,'co-creation 專案通知','你的專案：'+@confirm.name+' 已經進入正式募資階段，快去找尋投資者來贊助你的專案吧！您可利用此網址回到Cocreation平台檢視專案：http://cocreation.ctm.nthu.edu.tw/startaproject/myindex').deliver
+		redirect_to startaproject_myindex_path
+	end
+  
+  def authorizep	#顯示可作後續編輯的專案
+    @presub = Presub.includes(:projectparam).find(params[:id])
+		@files = Upfile.where("id=? AND currentuse=? AND usage=?",@presub.upfile_id,true,'summary')
+		@pics = Upfile.where("id=? AND currentuse=? AND usage=?",@presub.pic,true,'pic')
+		@feedback = Feedback.order("money ASC").where(:presub_id=>@presub.id).all
+  end
+
+  def updatep	#更新上架專案
+    @presub = Presub.find(params[:id])
+    @presub.update_attributes!(params[:content])
+    @presub.projectparam.update_attributes!(params[:set])
+    if @presub.save
+    	#運算天數差距
+		  restday2=DateTime.parse(@presub.projectparam.due2)-DateTime.now
+		  restday3=DateTime.parse(@presub.projectparam.due3)-DateTime.now
+		  @presub.projectparam.update_attributes!( :restday2=>restday2, :restday3=>restday3)
+			redirect_to :action => "feedbackcreate", :id => @presub.id
+		end
+  end
+
+  def inform	#更新上架專案通知審核者
+    @presub = Presub.includes(:projectparam).find(params[:id])
+	  #每一次有更改專案內容，都要把teacheron設成nil，表示尚未審核
+		if @presub.projectparam.nowstage==-2
+			@presub.projectparam.update_attributes!(:nowstage=>0)
+			#寄送邀請函
+		  #mentoremail = User.find(@mentor[0].id).email
+		  Usernotice.sendemail(@presub.projectparam.mentor_email,'co-creation 專案通知','系統通知，'+@presub.user.name+'的專案團隊邀請您成為專案【'+@presub.name+'】的指導者。請至Cocreation給予團隊指導！您可利用此網址回到Cocreation平台：http://cocreation.ctm.nthu.edu.tw/teacher').deliver
+		  #keeper1email = User.find(@keeper1[0].id).email
+		  Usernotice.sendemail(@presub.projectparam.keeper1_email,'co-creation 專案通知','系統通知，'+@presub.user.name+'的專案團隊邀請您成為專案【'+@presub.name+'】的初始階段審核者。請至Cocreation審核其專案您可利用此網址回到Cocreation平台：http://cocreation.ctm.nthu.edu.tw/teacher。').deliver
+		  #keeper2email = User.find(@keeper2[0].id).email
+		  Usernotice.sendemail(@presub.projectparam.keeper2_email,'co-creation 專案通知','系統通知，'+@presub.user.name+'的專案團隊邀請您成為專案【'+@presub.name+'】的企劃修改階段審核者，請隨時關注專案進度。您可利用此網址回到Cocreation平台：http://cocreation.ctm.nthu.edu.tw/teacher').deliver
+		  Usernotice.sendemail(current_user.email,'co-creation 專案通知','你的專案：'+@presub.name+' 將被審核，請隨時關注專案及檢查郵件通知。若專案在你設定的時限到期之前皆未被審核，請儘速聯絡你的審核者。您可利用此網址回到Cocreation平台檢視專案：http://cocreation.ctm.nthu.edu.tw/startaproject/myindex').deliver
+		elsif @presub.projectparam.nowstage==2
+  		@presub.update_attributes!(:teacheron=>nil, :modify=>(@presub.modify).to_i+1)
+		end
+		redirect_to startaproject_myindex_path
+  end
+
+  def sendmail
+    @presub = Presub.find(params[:presubid])
+		@user = User.find(params[:uid])
+  end
+
+  def updatemail
+    @presub = Presub.find(params[:presubid])
+		@user = User.find(params[:uid])
+		Usernotice.sendemail(@user.email, params[:content][:subject], "#{simple_format(params[:content][:mailcontent])}").deliver
+		redirect_to :action => "investlist", :id => @presub.pro.id
+  end
+end

@@ -1,0 +1,19 @@
+class Stroy < ActiveRecord::Migration
+  def change
+    create_table :historys do |t|
+
+			t.string :topic
+			t.string :history
+      t.integer :pro_id
+      t.integer :presub_id
+      t.integer :user_id
+     	t.string :send
+      t.boolean :show
+
+      t.references :user
+      t.references :pro
+
+      t.timestamps
+    end
+  end
+end

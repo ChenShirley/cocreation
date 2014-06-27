@@ -1,0 +1,10 @@
+<%= form_for @setparam, :url => { :action => 'membercreate', :id=> @set }, :method=>:put do |f| %>
+    <%= '請填入團隊成員註冊的信箱：'%> 請勿填入自己的信箱</br>
+  </p>
+  <%= f.fields_for :members do |builder| %>
+    <%= render 'member_fields', :f => builder %>
+  <% end %>
+  <p><%= link_to_add_fields "Add Member", f, :members %></p>
+
+ 	<p><%= f.submit "儲存" %></p>
+<% end %>

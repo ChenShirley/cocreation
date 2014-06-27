@@ -1,0 +1,96 @@
+<div id="Mshowname">
+  <%= @presub.name%>
+</div>
+
+<div id="Mshowcontext">
+	<div style="float:left; width:65%;">
+		<center>
+  		<div id="Mshowmedia">
+    		<%= @presub.video.html_safe%>		<!--要研究怎麼內嵌youtube -->
+ 		 </div>
+ 		 </center>
+
+ 		 <div id="Mshowsummary">
+				<p>
+				【 專案內容 】 </br>
+							<% if @presub.upfile_id==nil %>
+					 	 		<%= simple_format @presub.summary%>
+							<% else %>
+								<iframe src=<%= "http://docs.google.com/viewer?url=http://cocreation.ctm.nthu.edu.tw/files/#{@files[0].filetoken}&embedded=true" %> width="100%" height="780">
+								</iframe>
+							<% end %>
+				</p>
+				<p>
+				【 版本更新說明 】 </br>
+							<%= simple_format @presub.version%>
+				</p>
+ 	 	</div>
+ 	</div>
+ 	 
+  <div style="font-family: 微軟正黑體; float: left; font-size:15px;color:#607B8B;">
+	發起者：<%= @presub.user.name%>
+  </div>
+  
+  <div style="font-family: 微軟正黑體; float: right; font-size:15px;color:#607B8B;">
+  e-mail：<%= @presub.user.email%>
+  </div>
+  
+	<div style="float:left; margin-left: 10px;">
+  	<div id="Mshowinfo" >
+  	 		<span style="font-size: 18px;color:#607B8B;"> 專案目標：</span>NTD$<%= number_with_delimiter(@presub.goal, delimiter: ",") %></br>
+  	 		<span style="font-size: 18px;color:#607B8B;"> 剩餘天數：</span><%= @presub.projectparam.restday3%></br>
+   			<span style="font-size: 18px;color:#607B8B;"> 目前募集：</span> 尚未開始募資 </br>
+ 		 	<center>
+ 		 		<div style="width:100%; height:40px; background-color:#d44413; border-radius: 5px;font-size:35px;">
+ 		 			出資
+ 		 		</div>
+ 		 	</center>
+		</div>
+		
+ 		 <div id="Mshowteam">
+ 		 		<span style="font-size: 20px; color:#607B8B;">團隊介紹：</span></br>
+  					<%= simple_format @presub.intro%>
+ 		 </div>
+
+		<% @feedback.each do |all| -%>
+	 		 <div id="Mshowfeedback">
+	 		 		<span style="font-size: 20px; color:#607B8B;">贊助 NTD$ <%= all.money %> 回饋方案：</span></br>
+							<%= simple_format all.plan %>
+							人數限制：
+							<% case all.limit %>
+									<% when true %>
+											限量 <%= all.amount %>人
+									<% when false %>
+											無限制
+							<% end %>							
+	 		 </div>
+		<% end-%>
+
+	</div>
+</div>
+
+<div>
+	<center>
+		<p style="color:#8B3E2F;">【 專案參數 】</p>
+	  <p>企劃修改時限：<%=@presub.projectparam.due2%></p>
+	  <p>正式募資時限：<%=@presub.projectparam.due3%></p>
+	</center>
+</div>
+
+  <%= form_tag teacher_path(@presub.id),:method=>:put  do %>
+	<div align="center" style="margin-top: 20px; font-family: 微軟正黑體;">
+        <%= hidden_field :confirm, :name, :value=>@presub.name%>        
+        <%= label :confirm, :teacheron, '是否合格'%>
+        <%= select :confirm, :teacheron,[nil,true,false]%>
+
+				<p id="why">
+				<%= label :whynot, :context, '審核不合格原因：'%>
+				</br>
+				<%= text_area :whynot, :context %>
+    		<%= hidden_field :whynot, :presub_id, :value=>@presub.id%>
+    		<%= hidden_field :whynot, :user_id, :value=>current_user.id%>
+    		</p>
+
+        <%= submit_tag '確定'%>
+	</div>
+  <% end%>

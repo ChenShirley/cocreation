@@ -1,0 +1,39 @@
+// Place all the styles related to the mentor controller here.
+// They will automatically be included in application.css.
+// You can use Sass (SCSS) here: http://sass-lang.com/
+
+#index{	//index整頁
+padding-top:20px;
+  margin: 0px auto;
+  width:90%;
+  height:auto;
+}
+
+#index_mine{
+  margin:5px;
+  padding-top:5px;
+  float:left;
+  width:45%;
+  height: auto;
+  background-color:white;
+  border-style:solid;
+  border-color:white;
+  border-width:15px;
+  border-radius: 10px;
+  box-shadow: 4px 4px 12px 4px rgba(20%,20%,40%,0.5);
+}
+
+
+#index_nowinvest{
+  margin:5px;
+  padding-top:5px;
+  float:left;
+  width:45%;
+  height: auto;
+  background-color:white;
+  border-style:solid;
+  border-color:white;
+  border-width:15px;
+  border-radius: 10px;
+  box-shadow: 4px 4px 12px 4px rgba(20%,20%,40%,0.5);
+}

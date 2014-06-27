@@ -1,0 +1,19 @@
+專案內容：
+<%= link_to @files.filename, "http://cocreation.ctm.nthu.edu.tw/files/#{@files.filetoken}" -%>
+（目前使用版本）
+<%= button_to "重新上傳專案內容檔案", "/upfile/fileupload/"+@files.presub_id.to_s %>
+
+專案內容過去版本追蹤：
+<table>  
+	<tr>
+		<td>檔名</td>
+		<td>日期</td>
+	</tr>  
+
+	<% @pastfiles.each do |filelist| -%>  
+		<tr>  
+			<td><%= link_to filelist.filename, "http://cocreation.ctm.nthu.edu.tw/files/"+filelist.filetoken.to_s -%></td> 
+			<td><%= filelist.created_at -%></td>
+		<% end -%>  
+		</tr>
+</table>

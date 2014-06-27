@@ -1,0 +1,13 @@
+<p><%= @name %>感謝您使用cocreation平台！</p>
+
+<p>cocreation平台是清華大學服務科學所於2013年創立的服務創新專案群眾募資平台</p>
+
+<p>若您沒有在此平台註冊，請忽略此信件</p>
+
+<p>若確認註冊的使用者為您本人，請透過以下連結驗證身份，即可開始使用留言、贊助、提案等功能</p>
+
+<p><%= link_to '確認身份，回到cocreation平台', confirmation_url(@resource, :confirmation_token => @resource.confirmation_token) %></p>
+
+<p>cocreation邀請您與這些服務創新專案一起共創價值！</p>
+
+

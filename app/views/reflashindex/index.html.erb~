@@ -1,0 +1,85 @@
+<style>
+#classify{
+	float: right; 
+	font-size:15px; 
+	color:#68838B;
+	font-family: 微軟正黑體;
+}
+</style>
+
+<%=render :partial => 'classify'%>
+
+  <div id="container">
+    <div>
+      <% @allproject.each do |show|%>
+      <div id="id-item" class="item">
+        <div id="id-item-name">
+		        <a href=<%=reflashindex_path(show.pro.id)%>>
+  		        <%= simple_format show.name%>
+						</a>
+        </div>
+
+
+				<% if show.upfile_id==nil %>
+        		<center><a href=<%=reflashindex_path(show.pro.id)%>><img src=<%=show.pic%>></a></center>
+				<% else %>
+						<% @pics = Upfile.where("id=? AND currentuse=? AND usage=?",show.pic,true,'pic') %>
+				    <center>
+							<a href=<%=reflashindex_path(show.pro.id)%>>
+								<%=image_tag("#{@pics[0].filetoken}") %>
+							</a>
+						</center>
+				<% end %>
+
+
+        
+	<div style="float: left; font-size:15px;color:#607B8B; font-family: 微軟正黑體;">發起者：<%= show.user.name%></div>
+        <% case show.classify%>
+  	  <%when '1'%>
+    	    <div id="classify">分類：設計商品</div>
+  	  <%when '2'%>
+    	    <div id="classify">分類：音樂影視</div>
+  	  <%when '3'%>
+    	    <div id="classify">分類：舞台演出</div>
+  	  <%when '4'%>
+    	    <div id="classify">分類：休閒娛樂</div>
+  	  <%when '5'%>
+    	    <div id="classify">分類：創作出版</div>
+  	  <%when '6'%>
+    	    <div id="classify">分類：社會文化</div>
+  	  <%when '7'%>
+    	    <div id="classify">分類：科技應用</div>
+  	  <%when '8'%>
+    	    <div id="classify">分類：美食饗宴</div>
+	<% end %>
+	</br>
+	<%@progress=0%>
+        <%if (show.pro.got.to_f/(show.goal.to_f+1))*100.to_i>100%>
+	  <%@progress = 100%>
+        <%else%>
+          <%@progress = (show.pro.got.to_f/(show.goal.to_f+1))*100.to_i%>
+        <%end%>
+        <div style="width:<%= @progress%>%;height:10px;background-color:red;"></div>
+        <div id="id-item-describe" style="clear:both; font-family: 微軟正黑體;">
+          <%= simple_format show.describe%>
+        </div>
+	<div style="font-size:17px; color:#53868B; font-family: 微軟正黑體;">剩餘天數：<%= show.projectparam.restday3%></div>
+      </div>
+      <% end %>
+    </div>
+  </div>
+
+
+<script>      
+$(function(){
+  var $container = $('#container');
+  $container.imagesLoaded(function(){
+    $container.masonry({
+      itemSelector : '.item',
+      isAnimated: true,
+      isFitWidth: true,
+      columnWidth : 30          
+    });         
+  });           
+});             
+</script>

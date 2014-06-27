@@ -1,0 +1,157 @@
+/*
+ * This is a manifest file that'll be compiled into application.css, which will include all the files
+ * listed below.
+ *
+ * Any CSS and SCSS file within this directory, lib/assets/stylesheets, vendor/assets/stylesheets,
+ * or vendor/assets/stylesheets of plugins, if any, can be referenced here using a relative path.
+ *
+ * You're free to add application-wide styles to this file and they'll appear at the top of the
+ * compiled file, but it's generally better to create a new file per style scope.
+ *
+ *= require_self
+ *= require jquery.ui.all
+ *= require jquery-ui-timepicker-addon
+ *= require_tree .
+ */
+
+#top-bar {
+  margin-top:0px;
+  background-color: #d44413;
+  height:50px;
+  width: 100%;
+  position:absolute;
+  top:0;
+  right:0;
+}
+
+#top-bar ul {
+
+  list-style:none;
+  margin-top: 0px;
+  padding:0px;
+  border-style:none;
+}
+
+#top-bar li {
+  width: auto;
+  float: right;
+  text-align: center;
+  margin-right: 3px;
+  margin-top: 15px;
+  height: 30px;
+}
+
+#top-bar li a {
+  list-style-type:none;
+  font-size: 18px;
+  
+  color:white;
+  text-decoration: none;
+}
+
+#top-bar li a:hover{
+  color:#ff8c00;
+}
+
+#main {
+  margin-top: 70px;
+}
+
+body {
+  background-color: #F2F2F2;
+	font-family: 微軟正黑體;
+}
+
+
+/* for css menu */
+#cssmenu {
+  border: none;
+  border: 0px;
+  margin: 0px;
+  padding: 0px;
+  font: 67.5% 'Lucida Sans Unicode', 'Bitstream Vera Sans', 'Trebuchet Unicode MS', 'Lucida Grande', Verdana, Helvetica, sans-serif;
+	font-family: 微軟正黑體;
+  font-size: 22px;
+  font-weight: bold;
+  width: auto;
+}
+#cssmenu ul {
+  background: #333333;
+  height: 55px;
+  list-style: none;
+  margin: 0;
+  padding: 0;
+}
+#cssmenu li {
+  float: left;
+  padding: 0px;
+}
+#cssmenu li a {
+  background: #333333 url('images/seperator.png') bottom right no-repeat;
+  display: block;
+  font-weight: normal;
+  line-height: 55px;
+  margin: 0px;
+  padding: 0px 45px;
+  text-align: center;
+  text-decoration: none;
+}
+#cssmenu > ul > li > a {
+  color: #cccccc;
+}
+#cssmenu ul ul a {
+  color: #cccccc;
+}
+#cssmenu li > a:hover,
+#cssmenu ul li:hover > a {
+  background: #ffbf00 url('images/hover.png') bottom center no-repeat;
+  color: #FFFFFF;
+  text-decoration: none;
+}
+#cssmenu li ul {
+  background: #333333;
+  display: none;
+  height: auto;
+  padding: 0px;
+  margin: 0px;
+  border: 0px;
+  position: absolute;
+  width: 225px;
+  z-index: 200;
+  /*top:1em;
+	/*left:0;*/
+
+}
+#cssmenu li:hover ul {
+  display: block;
+}
+#cssmenu li li {
+  background: url('images/sub_sep.png') bottom left no-repeat;
+  display: block;
+  float: none;
+  margin: 0px;
+  padding: 0px;
+  width: 225px;
+}
+#cssmenu li:hover li a {
+  background: none;
+}
+#cssmenu li ul a {
+  display: block;
+  height: 55px;
+  font-size: 20px;
+  font-style: normal;
+  margin: 0px;
+  padding: 0px 15px 0px 20px;
+  text-align: left;
+}
+#cssmenu li ul a:hover,
+#cssmenu li ul li:hover > a {
+  background: #ffbf00 url('images/hover_sub.png') center left no-repeat;
+  border: 0px;
+  color: #ffffff;
+  text-decoration: none;
+}
+#cssmenu p {
+  clear: left;
+}

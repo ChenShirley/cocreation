@@ -1,0 +1,11 @@
+<p><%= @resource.email %>您好！</p>
+
+<p>因為大量的試圖登入錯誤，為確保您的帳號安全而暫時鎖上此帳號的所有相關功能</p>
+
+<p>請點選以下連結進行帳號解鎖</p>
+
+<p><%= link_to '帳號解鎖', unlock_url(@resource, :unlock_token => @resource.unlock_token) %></p>
+
+<p>cocreation平台提醒您，可以更換新的密碼，以確保您的帳號安全</p>
+
+<p>感謝您繼續支持cocreation平台！</p>

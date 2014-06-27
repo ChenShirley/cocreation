@@ -1,0 +1,45 @@
+<center>
+<div id="main">
+</br>
+  <%= form_tag "updateremit/"+@set.id.to_s ,:method=>:put do %>
+
+<p>  
+    <%= label :set, :account_name, '匯款帳號戶名：'%>
+    <%= text_field :set, :account_name, :autocomplete=>"off", :value=>@set.account_name %></br>
+
+    <%= label :set, :account_num, '匯款銀行：'%>
+    <%= text_field :set, :bank, :autocomplete=>"off", :value=>@set.bank %></br>
+    
+    <%= label :set, :account_num, '匯款帳號後五碼：'%>
+    <%= text_field :set, :account_num, :autocomplete=>"off", :value=>@set.account_num %></br>
+
+    <%= label :set, :time, '匯款時間：'%>
+    <%= text_field :set, :time, :class=>"datetimepicker", :id=>"time", :autocomplete=>"off", :value=>@set.time %></br>
+
+</p>    
+</br>
+
+    <input name="commit" type="submit" value="確定", onclick="return confirm('請確實填寫以上四個欄位，否則將會被導入相同頁面要求您重新填寫！')">
+<% end%>
+
+</div>
+</center>
+
+<script> 
+$(document).ready(function () {
+    $(".datetimepicker").datetimepicker({
+    		dateFormat: "yy-mm-dd",
+    		showMonthAfterYear: true,
+    		showOtherMonths: true,
+    		selectOtherMonths: true,
+				
+				timeFormat: "HH:mm:ss",
+				showSecond: true,
+				showTime: false,
+    		onSelect: function(date){
+    				this.focus();
+    				this.blur();
+    		}
+    });
+});
+</script>

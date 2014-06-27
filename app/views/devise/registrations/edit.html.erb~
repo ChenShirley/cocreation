@@ -1,0 +1,35 @@
+<h2>Edit <%= resource_name.to_s.humanize %></h2>
+
+<%= form_for(resource, :as => resource_name, :url => registration_path(resource_name), :html => { :method => :put }) do |f| %>
+  <%= devise_error_messages! %>
+
+  <div><%= f.label :email, '電子信箱' %><br />
+  <%= f.email_field :email, :autofocus => true %></div>
+
+  <% if devise_mapping.confirmable? && resource.pending_reconfirmation? %>
+    <div>目前信箱尚未通過驗證： <%= resource.unconfirmed_email %></div>
+  <% end %>
+
+  <div><%= f.label :password,'新密碼' %> <i>（若不想更改密碼，請留空）</i><br />
+  <%= f.password_field :password, :autocomplete => "off" %></div>
+
+  <div><%= f.label :password_confirmation,'確認密碼' %><br />
+  <%= f.password_field :password_confirmation %></div>
+
+  <div><%= f.label :current_password,'目前密碼' %> <i>（需要目前密碼，以確認身份）</i><br />
+  <%= f.password_field :current_password %></div>
+
+  <div><%= f.submit "更新並儲存" %></div>
+<% end %>
+
+<h3>註銷帳號</h3>
+<p>
+若您不想繼續使用此帳號，可以利用此功能註銷您目前的帳號</br>
+請放心，註銷帳號後，cocreation平台將不會繼續持有您的個人資料</br>
+很遺憾您的離開，如果您有任何的意見回饋，歡迎與我們聯繫。</br>
+</br>
+e-mail: <a href="mailto:cocreation.nthu@gmail.com">cocreation.nthu@gmail.com</a>
+</p>
+<p>Unhappy? <%= button_to "註銷帳號", registration_path(resource_name), :data => { :confirm => "請問您確定要註銷帳號嗎？" }, :method => :delete %>.</p>
+
+<%= link_to "回到會員登入頁面", :back %>

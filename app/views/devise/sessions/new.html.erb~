@@ -1,0 +1,54 @@
+<style>
+#user_email{
+	-webkit-border-radius: 5px;
+  -moz-border-radius: 5px;
+  border-radius:5px;
+  box-shadow:0px 0px 0.5px #000;
+  width:240px;
+}
+
+#user_password{
+	-webkit-border-radius: 5px;
+  -moz-border-radius: 5px;
+  border-radius:5px;
+  box-shadow:0px 0px 0.5px #000;
+  width:240px;
+}
+#SignIn{
+	margin: 0 auto;
+	border-radius: 10px; 
+	border-style:solid; 
+	border-color:white; 
+	border-width:15px; 
+	background-color: white;
+	width: 250px; 
+	height: auto; 
+	box-shadow: 4px 4px 12px 4px rgba(20%,20%,40%,0.5);
+	
+}
+
+</style>
+
+<div id="SignIn">
+
+<h1>cocreation會員登入</h1>
+
+<%= form_for(resource, :as => resource_name, :url => session_path(resource_name)) do |f| %>
+
+  
+  <div style="color: #8B4726"><%= f.label :email %>電子信箱<br />
+  <%= f.email_field :email, :autofocus => true %></div>
+
+  <div style="color: #8B4726"><%= f.label :password %>密碼<br />
+  <%= f.password_field :password %></div><br />
+
+  <% if devise_mapping.rememberable? -%>
+    <div><%= f.check_box :remember_me %> <%= f.label :remember_me %>記住我（公用電腦請勿勾選）</div>
+  <% end -%>
+  <div><%= f.submit "登入" %></div>
+  
+ 
+<% end %><br />
+
+<%= render "devise/shared/links" %> 
+</div>

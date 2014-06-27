@@ -1,0 +1,61 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <title>Crowdfunding</title>
+  <%= stylesheet_link_tag    "jquery-ui.css" %>
+  <%= stylesheet_link_tag    "jquery-ui-timepicker-addon.css" %>
+  <%= stylesheet_link_tag    "application", :media => "all" %>
+  <%= javascript_include_tag "application.js" %>
+  <%= csrf_meta_tags %>
+  <%= javascript_include_tag "jquery.min.js" %>
+  <%= javascript_include_tag "jquery-ui.js" %> 
+  <%= javascript_include_tag "jquery-ui-timepicker-addon.js" %>
+  <%= javascript_include_tag :defaults, "javascripts/nested_form.js" %>
+  <%= javascript_include_tag "jquery.masonry.min.js" %>
+  <%= stylesheet_link_tag "SimpleTextEditor" %>
+  <%= javascript_include_tag "SimpleTextEditor.js" %>
+</head>
+<body onresize = "adjustWidth()">
+<div id='cssmenu'>
+<ul>
+   <li><a href="<%=root_path %>"><img  style="height:35px;" src="http://i.imgur.com/5SjJung.png" ></a></li>
+   <li><%= link_to '關於我', project_whoami_path%></li>
+	 <li><%= link_to '使用指南', project_aboutus_path%></li>
+
+	<% if user_signed_in? %>
+   <li class='has-sub'><%= link_to current_user.name+'的專區', startaproject_index_path %>
+      <ul>
+         <li><%= link_to '審核者專區', teacher_index_path%></li>
+         <li><%= link_to '指導者專區', mentor_index_path%></li>
+         <li class='last'><%= link_to '登出', destroy_user_session_path, :method => 'delete'%></li>
+      </ul>
+   </li>
+	<% else %>
+   <li class='last'><%= link_to '登入', new_user_session_path %></li>
+	<% end %>
+
+	<% if admin_signed_in? %>
+   <li class='has-sub'><%= link_to '管理員專區', manager_index_path%>
+      <ul>
+         <li><%= link_to '管理員登出', destroy_admin_session_path, :method => 'delete'%></li>
+      </ul>
+   </li>
+	<% end %>
+</ul>
+</div>
+
+<!--
+    <% else %>
+      <li><%= link_to '管理員登入', new_admin_session_path %></li>
+-->
+
+<div id="main">
+  <p class="notice"><%= notice %></p>
+  <p class="alert"><%= alert %></p>
+
+  <%= yield %>
+</div>
+
+</body>
+</html>
+

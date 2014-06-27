@@ -1,0 +1,86 @@
+<div id="main_authorizep">
+</br>
+  <%= form_tag "updatep/"+@presub.id.to_s ,:method=>:put do %>
+
+<p>
+    <%= label :set, :due2, '企劃修改時限：'%> 募資開始時間</br>
+    <%= text_field :set, :due2, :class=>"datepicker", :id=>"due2", :autocomplete=>"off", :value=>@presub.projectparam.due2 %></br>
+
+    <%= label :set, :due3, '正式募資時限：'%> 募資結束時間</br>
+    <%= text_field :set, :due3, :class=>"datepicker", :id=>"due3", :autocomplete=>"off", :value=>@presub.projectparam.due3 %></br>
+</p>    
+</br>
+  
+		<% if !Upfile.where("presub_id=? AND usage=? AND currentuse=?",@presub.id,'pic',true).empty? %>
+		<iframe src=<%= "/upfile/picshow/"+@pics[0].id.to_s %> width="100%" height="100" frameborder="0" border="0" cellspacing="0" style="border:none; float:left;"></iframe>
+		<% else %>
+			</br>
+			<h3>請您重新上傳封面圖片</h3>
+			<iframe src=<%= "/upfile/picupload/#{@presub.id}" %> width="100%" height="100" frameborder="0" border="0" cellspacing="0" style="border:none; float:left;"></iframe>
+		<% end %>
+
+    </br>
+    <%= label :content, :video, '專案影片'%> 請將影片上傳至youtube後，取得影片嵌入碼並貼上，詳細做法請參考<%= link_to "使用說明","/project/aboutus" %>
+    <%= text_area :content, :video, :value=>@presub.video%>
+    </br>
+    <%= label :content, :goal, '專案目標'%> 請直接輸入預計募資金額，最低為100元</br>
+    NTD$<%= text_field :content, :goal, :value=>@presub.goal%>
+    </br>
+    <%= label :content, :intro, '團隊介紹'%></br>
+    <%= text_area :content, :intro, :value=>@presub.intro%>
+    </br>
+    <%= label :content, :describe, '專案摘要'%> 請勿超過255個字</br>
+    <%= text_area :content, :describe, :value=>@presub.describe%>
+    </br>
+
+		<% if @presub.upfile_id==nil %>
+			</br>
+			<h3>以下是您目前的專案內容，若須更改，請直接上傳pdf或是word檔案</h3>
+			<iframe src=<%= "/upfile/fileupload/#{@presub.id}" %> width="100%" height="200" frameborder="0" border="0" cellspacing="0" style="border:none; float:left;"></iframe>
+			<%= simple_format @presub.summary%>
+		<% else %>
+			<iframe src=<%= "/upfile/fileshow/#{@files[0].id}" %> width="100%" height="200" frameborder="0" border="0" cellspacing="0" style="border:none; float:left;"></iframe>
+		<% end %>
+
+		<%= label :content, :version, '版本更新說明' %></br>
+		<%= text_area :content, :version, :value=>@presub.version %>
+
+    <span style="width:100px; font-size:13pt; font-family:微軟正黑體; color:block;">回饋方案</span></br>
+				<% @feedback.each do |all| -%>
+						<p>
+						NTD$ <%= all.money %> 以上：<%= all.plan %>
+						</br>
+						人數限制：
+						<% case all.limit %>
+								<% when true %>
+										限量 <%= all.amount %> 人
+								<% when false %>
+										無限制
+						<% end %>
+						</p>
+				<% end-%>
+    </br>
+
+    <center>
+    </br>
+
+    <input name="commit" type="submit" value="下一步並儲存", onclick="return confirm('若有上傳新的封面圖片及專案內容檔案\n請記得點選這兩者的檔案上傳按鈕喔！\n下一步驟的頁面將可修改回饋內容。')">
+</center>
+<% end%>
+</div>
+
+<script>
+$(document).ready(function () {
+    $(".datepicker").datepicker({
+    		dateFormat: "yy-mm-dd",
+    		minDate: 1,
+    		showMonthAfterYear: true,
+    		showOtherMonths: true,
+    		selectOtherMonths: true,
+    		onSelect: function(date){
+    				this.focus();
+    				this.blur();
+    		}
+    });
+});
+</script>

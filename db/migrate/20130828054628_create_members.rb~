@@ -1,0 +1,17 @@
+class CreateMembers < ActiveRecord::Migration
+  def change
+    create_table :members do |t|
+      t.integer :projectparam_id
+      t.integer :user_id
+      t.integer :presub_id
+      t.string :email
+      t.integer :write
+
+      t.references :user
+      t.references :projectparam
+      t.references :presub
+
+      t.timestamps
+    end
+  end
+end

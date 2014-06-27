@@ -1,0 +1,34 @@
+<div id="sendmail">
+<p>
+	提醒您，為方便收件者判別，可以在信件內容加入您的專案名稱【 <%= @presub.name %> 】 ，或其他專案相關資訊喔！
+</p>
+</br>
+  <%= form_tag "/updatemail/"+@user.id.to_s+"/"+@presub.id.to_s ,:method=>:put do %>
+    <%= label :content, :subject, '主旨：'%>
+    <%= text_field :content, :subject, :value=>"co-creation 專案通知"%>
+    </br>
+    <%= label :content, :mailto, '收件者：'%>
+    <%= text_field :content, :mailto, :value=>@user.email, :readonly=>true%>
+    </br>
+    <%= label :content, :mailcontent, '信件內容'%></br>
+    <%= text_area :content, :mailcontent, :value=>"" %>
+    </br>
+
+    <center>
+    </br>
+    	<input name="commit" type="submit" value="寄出" id="button-id" onClick="ste.submit()">
+		</center>
+<% end%>
+</div>
+
+<script>
+/*
+	var ste = new SimpleTextEditor("content_mailcontent", "ste", "content[mailcontent]"); 
+	ste.cssFile = 'test.css'; 
+	ste.charset = 'iso-8859-1';
+	ste.init();
+	function tes(){
+		alert("sdsd");
+	}
+*/
+</script>

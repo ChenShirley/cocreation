@@ -1,0 +1,6 @@
+module StartaprojectHelper
+	def setup_event(projectparam)
+		  projectparam.build_members unless projectparam.members
+		  projectparam
+	end
+end

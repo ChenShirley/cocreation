@@ -1,0 +1,212 @@
+<div id="showname">
+	<%= @thisp.name%>
+</div>
+
+<div id="showcontext">
+	<div style="overflow:hidden; ">
+	<div style="float:left; width:65%;">
+		<center>
+			<div id="showmedia">
+				<%= @thisp.video.html_safe%>
+			</div>	
+		</center>	
+	
+		<div id="showsummary">
+			<p>
+		【 專案內容 】 </br>
+			<% if @thisp.upfile_id==nil %>
+				<%= simple_format @thisp.summary%>
+			<% else %>
+				<iframe src=<%= "http://docs.google.com/viewer?url=http://cocreation.ctm.nthu.edu.tw/files/#{@files[0].filetoken}&embedded=true" %> width="100%" height="780">
+				</iframe>
+			<% end %>
+
+			</p>
+			<p>
+		【 版本更新說明 】 </br>
+			<%= simple_format @thisp.version%>
+			</p>
+		</div>
+ 	</div>
+
+	<div style="font-family: 微軟正黑體; float: left; font-size:15px;color:#607B8B;">
+		發起者：<%= @thisp.user.name%>
+	</div>
+	
+	<div style="font-family: 微軟正黑體; float: right; font-size:15px;color:#607B8B;">
+		e-mail：<%= @thisp.user.email%>
+	</div>
+
+	<div style="float:left; margin-left: 10px;">
+		<div id="ishowinfo" >
+			<span style="font-size: 20px; color:#607B8B;"> 專案目標：</span></br>
+				NTD$ <%= number_with_delimiter(@thisp.goal, delimiter: ",") %>
+		</div>
+
+		<div id="ishowteam" >
+			<span style="font-size: 20px; color:#607B8B;">團隊介紹：</span></br>
+				<%= simple_format @thisp.intro%>
+		</div>
+		
+		<% @thisp_feedback.each do |all| -%>
+	 		 <div id="ishowfeedback">
+	 		 		<span style="font-size: 20px; color:#607B8B;">贊助 NTD$ <%= all.money %> 回饋方案：</span></br>
+							<%= simple_format all.plan %>
+							人數限制：
+							<% case all.limit %>
+									<% when true %>
+											限量 <%= all.amount %>人
+									<% when false %>
+											無限制
+							<% end %>							
+	 		 </div>
+		<% end-%>
+
+		<div id="ishowvote">
+			<div><span style="color:#8B3E2F;">【意見回饋】</span>
+					</br>
+					總投票人數：<%= @allpeople %></br>
+					市場性平均分數：<%= number_with_precision(@market_avg,precision:2,separator:'.') %></br>
+					可行性平均分數：<%= number_with_precision(@feasible_avg,precision:2,separator:'.') %></br>
+					創新性平均分數：<%= number_with_precision(@innovativa_avg,precision:2,separator:'.') %>
+			</div>
+</br>
+		<% if user_signed_in? %>
+					<%= form_for @vote, :url => { :controller => 'ideaindex', :action => 'votecreate' } do |f| %>
+						<div style="color:black;">
+			<span style="color:#8B3E2F;">【 對專案的內容,你/妳有甚麼想法呢？ 】</span></br>
+			（最低分為1；最高分為5）</br>
+						  <%= f.label :marketability, '市場性：'%> 你覺得此專案是否符合市場需求呢？</br>
+						  <%= f.radio_button :marketability, '1'%>1分
+						  <%= f.radio_button :marketability, '2'%>2分
+						  <%= f.radio_button :marketability, '3', :checked=>"checked"%>3分
+						  <%= f.radio_button :marketability, '4'%>4分
+							<%= f.radio_button :marketability, '5'%>5分</br>
+
+						  <%= f.label :feasibility, '可行性'%> 你覺得此專案在實作上是否可行呢？</br>
+						  <%= f.radio_button :feasibility, '1'%>1分
+						  <%= f.radio_button :feasibility, '2'%>2分
+						  <%= f.radio_button :feasibility, '3', :checked=>"checked"%>3分
+						  <%= f.radio_button :feasibility, '4'%>4分
+							<%= f.radio_button :feasibility, '5'%>5分</br>
+
+						  <%= f.label :innovative, '創新性'%> 你覺得此專案夠創新、夠吸引人嗎？</br>
+						  <%= f.radio_button :innovative, '1'%>1分
+						  <%= f.radio_button :innovative, '2'%>2分
+						  <%= f.radio_button :innovative, '3', :checked=>"checked"%>3分
+						  <%= f.radio_button :innovative, '4'%>4分
+							<%= f.radio_button :innovative, '5'%>5分</br>
+
+							<%= f.hidden_field :name, :value=>current_user.name %>
+							<%= f.hidden_field :user_id, :value=>current_user.id%> 
+							<%= f.hidden_field :presub_id, :value=>@thisp.id%>    
+							<%= f.hidden_field :show, :value=>true%>
+
+							<% if !current_user.votes.where( :presub_id => params[:id]).empty? %>
+									</br>你已經對此專案投過票囉！若有其他想法，歡迎你留下意見唷！
+							<% else %>
+									<%= f.submit '確定送出'%>
+							<% end %>
+						</div>
+					<% end %>
+		<% else %>
+			<%= link_to '你還沒登入喔！快加入會員，立即登入＆留下你心中的想法吧！', new_user_session_path, :target=>"_blank" %>
+		<% end %>
+		</div>
+
+</div>
+
+<img src="https://dl.dropbox.com/u/19978892/%E5%88%86%E9%9A%94%E7%B7%9A%20%281%29.png" >
+
+<div style="font-weight:bolder;">
+	<a href="#" 
+		onclick="
+		  window.open(
+		    'https://www.facebook.com/sharer/sharer.php?u='+encodeURIComponent(location.href), 
+		    'facebook-share-dialog', 
+		    'width=626,height=436'); 
+		  return false;">
+		Share on Facebook
+	</a>
+</div>
+
+<div id="showMessage">
+		<p style="font-size: 30px; color:#607B8B; font-family: 微軟正黑體;"> Cocreation討論區</p>
+		</br>
+		<% if user_signed_in? %>	
+				<center>
+					<%= form_for @event, :url => { :controller => 'ideaindex', :action => 'create' } do |f| %>
+						<div style="color:black;">
+						<%= f.label :name ,'姓名：'%>
+						<%= current_user.name %>
+						<%= f.hidden_field :name, :value=>current_user.name %></br>
+
+						<%= f.label :context, '意見回饋'%></br>
+						<%= f.text_area :context, :value=>"？", :size=>"30x2"%>
+
+						<%= f.hidden_field :user_id, :value=>current_user.id%> 
+						<%= f.hidden_field :presub_id, :value=>@thisp.id%>    
+						<%= f.hidden_field :show, :value=>true%>
+						</br>
+						<%= f.submit '確定送出'%>
+					<% end %>
+						</div>
+				</center>
+		<% else %>
+				<center>
+					<%= form_for @event, :url => { :controller => 'ideaindex', :action => 'create' } do |f| %>
+						<div style="color:black;">
+						<%= f.label :name ,'姓名：'%>
+						<%= f.text_field :name, :value=>'訪客' %></br>
+
+						<%= f.label :context, '意見回饋'%></br>
+						<%= f.text_area :context, :value=>"？", :size=>"30x2"%>
+
+						<%= f.hidden_field :presub_id, :value=>@thisp.id%>    
+						<%= f.hidden_field :show, :value=>true%>
+						</br>
+						<%= f.submit '確定送出'%>
+					<% end %>
+						</div>
+				</center>
+		<% end %>
+
+		</br>
+		</br>
+
+		<% @message.each do |m|%>
+			<%if m.show == true%>
+				<div>
+					<span style="color:#8B3E2F;">【意見回饋】</span>
+					<span style="font-weight:bolder;"><a href="mailto:<%=m.user.email%>"><%=m.name%></a></span>
+				</div>
+				<%=m.context%></br>
+
+				<% Questionforidea.find(m.id).answerforideas.each do |answer|%>
+					<div style="color:#8B3E2F;">
+						<span style="font-weight:bolder;"><%=answer.name%></span>回應：
+					</div>
+					<%=answer.context%></br>
+				<%end%>
+
+					<% if user_signed_in? %>
+							<%= form_for @answer, :url => { :controller => 'ideaindex', :action => 'updateanswer' } do |f| %>
+								<%= f.label :context, '回應'%>
+								<%= f.text_area :context, :size=>"30x1" %>
+								<%= f.hidden_field :questionforidea_id, :value=>m.id%>
+								<%= f.hidden_field :name, :value=>current_user.name%>
+								<%= f.submit '送出'%>
+							<%end%>
+					<% else %>
+							<%= form_for @answer, :url => { :controller => 'ideaindex', :action => 'updateanswer' } do |f| %>
+								<%= f.label :context, '回應'%>
+								<%= f.text_area :context, :size=>"30x1" %>
+								<%= f.hidden_field :questionforidea_id, :value=>m.id%>
+								<%= f.hidden_field :name, :value=>'訪客' %>
+								<%= f.submit '送出'%>
+							<%end%>
+					<%end%>
+
+			<%end%>
+		<%end%>
+</div>

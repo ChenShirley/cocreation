@@ -1,0 +1,118 @@
+<div id="index">
+
+<% if current_admin.email=="cocreation0828@gmail.com" %>
+	
+	<div id="index_delete" align="center">
+【 已上架專案 】
+		<div>
+		  <table style="text-align: center;">
+			  <thead>
+		    <th>專案名稱</th>
+		    <th>提案者</th>
+				<th>目前進度</th>
+		    <th>管理</th>
+		    <th>projectparam</th>
+		    <th>presub</th>
+		    </thead>
+		  	
+		  	<tbody>
+
+					<% @errordelete.each do |delete| -%>
+						<tr>
+							<td> </td>
+						  <td><%=delete.user.name%></td>
+              		<% case delete.nowstage %>
+									<%when nil %>
+											<td>參數錯誤</td>
+									<% end %>
+						  <td><%=link_to "刪除",'/manager/deletepresub/'+delete.id.to_s,:method=>:put, :confirm => '您確定要刪除此專案？'%>  <%=link_to "修改參數",'/manager/modify/'+delete.id.to_s,:method=>:get%></td>
+						  <td><%=delete.id%></td>
+						  <td> </td>
+						</tr>
+					<% end-%>
+
+					<% @alldelete.each do |delete| -%>
+						<tr>
+						  <td><%=delete.presub.name%></td>
+							<td><%=delete.presub.user.name%></td>
+              		<% case delete.nowstage %>
+									<%when -2 %>
+											<td><a href=<%= "/startaproject/preview/"+delete.presub.id.to_s %>>尚未送出審核</a></td>
+									<%when -1 %>
+											<% if delete.presub.confirm.nil? %>
+													<td><a href=<%= "/startaproject/notconfirm/"+delete.presub.id.to_s %>>時限已過</a></td>
+											<% else %>
+												<td><a href=<%= "/startaproject/notconfirm/"+delete.presub.id.to_s %>>未通過</a></td>
+											<% end %>
+									<%when 0 %>
+											<td><a href=<%= ideaindex_path(delete.presub.id) %>>初始提案</a></td>
+									<%when 1 %>
+											<td><a href=<%= ideaindex_path(delete.presub.id) %>>創意發想</a></td>
+									<%when 2 %>
+											<td><a href=<%= ideaindex_path(delete.presub.id) %>>企劃修改</a></td>
+									<%when 3 %>
+											<td>正式募資</td>
+									<%when 4 %>
+											<td>後續追蹤</td>
+									<% end %>
+						  <td><%=link_to "刪除",'/manager/deletepresub/'+delete.id.to_s,:method=>:put, :confirm => '您確定要刪除此專案？'%>  <%=link_to "修改參數",'/manager/modify/'+delete.id.to_s,:method=>:get%></td>
+						  <td><%=delete.id%></td>
+						  <td><%=delete.presub.id%></td>
+						</tr>
+					<% end-%>
+		     </tbody>
+		  </table>
+		</div>
+	</div>
+
+<% end %>
+
+	<div id="index_check" align="center">
+【 待審核專案款項 】
+		<div>
+		  <table style="text-align: center;">
+			  <thead>
+		    <th>專案名稱</th>
+				<th>贊助金額</th>
+				<th>戶名</th>
+				<th>後五碼</th>
+				<th>審核</th>
+				<th>刪除</th>
+		    </thead>
+
+		  	<tbody>
+					<% @check.each do |all| %>
+						<tr>
+							<td><%=all.pro.presub.name%></td>
+						  <td>NTD$<%= number_with_delimiter(all.howmuch, delimiter: ",") %></td>
+						  <td><%=all.account_name%></td>
+						  <td><%=all.account_num%></td>
+						  <td><%=all.time%></td>
+						  <td><%=link_to "details",'/manager/checkremit/'+all.id.to_s,:method=>:put%></td>
+						  <td><%=link_to "刪除",'/startaproject/deleteinvest/'+done.id.to_s,:method=>:put, :confirm => '您確定要刪除此專案？'%>  <%=link_to "修改參數",'/manager/modify/'+delete.id.to_s,:method=>:get%></td>
+					<% end%>
+						</tr>
+		     </tbody>
+		  </table>
+		</div>
+	</div>
+
+</div>
+
+<!-- 事求人先拿掉
+<center>
+<div id="index_poSomething">
+	【 事求人 】
+	</br></br>
+	<%=form_tag '/manager/saveaskforhelp' do%>
+  	<%=label :ask, :title, "Title："%>
+  	<%=text_field :ask, :title%>
+		</br>
+  	<%=label :ask, :url, "URL："%>
+  	<%=text_field :ask, :url%>
+		</br>
+  <%= submit_tag '確定送出'%>
+	<%end%>
+</div>
+</center>
+-->

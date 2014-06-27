@@ -1,0 +1,14 @@
+class Usernotice < ActionMailer::Base
+  default from: "cocreationserver@gmail.com"
+
+  # Subject can be set in your I18n file at config/locales/en.yml
+  # with the following lookup:
+  #
+  #   en.usernotice.context.subject
+  #
+  def sendemail(email,topic,context,path,name)
+  
+    mail(:to => email, :subject => topic, :body=>context, :content_type=>"html",:temple_path=>path, :temple_name=>name)
+  
+  end
+end

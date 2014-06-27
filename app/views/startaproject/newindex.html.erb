@@ -1,0 +1,56 @@
+<div style="width: 30%; float: left;">
+	<h2>贊助注意事項</h2>
+	＊填寫匯款完成通知後，平台會於一日內審核（因為人工審核，請耐心等待），審核後平台會以信件通知匯款成功，也可在此查看該筆贊助的狀態。</br></br>
+	＊在您贊助的專案募資截止後，若達到預期金額，提案者將依您所贊助的金額履行承諾的項目。</br></br>
+	＊若贊助的專案未達預期金額，Cocreation平台會寄送信件詢問您的退款帳戶，並將您的贊助金額全數退還。</br></br>
+	（退款手續費由平台向提案者索取，故收到之退款為原贊助之金額。）</br></br>
+	＊如有專案相關問題，請隨時與專案提案者保持聯繫，可點選您所贊助的專案名稱進入專案頁面，查看提案者聯絡方式。</br>
+</div>
+
+
+<div align="center">
+	<div id="myinvest">
+		【 贊助專案狀態 】
+		<hr style="width: 80%; border-color:#CCCCCC;border:0.5;">
+		<div id="projectUp" >
+  		<table style="text-align: center;">
+		      <thead>
+	          <th>專案名稱</th>
+						<th>贊助金額</th>
+						<th>回饋方案</th>
+						<th>狀態</th>
+						<th>刪除</th>
+		      </thead>
+		      
+		      <tbody>
+		          <% @alldone.each do |done| %>
+									<% feedback = Feedback.find(done.feedback_id) %>
+		              <tr>
+			                <td><a href=<%= reflashindex_path(done.pro_id) %> title="查看專案內容"><%= done.pro.presub.name %></a></td>
+											<td>NTD$<%= number_with_delimiter(done.howmuch) %></td>
+											<td><%= feedback.plan %></td>
+			                		<% case done.remit %>
+													<%when nil%>
+															<td><%= link_to "填寫匯款完成通知","remit/"+done.id.to_s %></td>
+															<td> <%=link_to "刪除",'/startaproject/deleteinvest/'+done.id.to_s, :method => :put, :confirm => '您確定要刪除此筆贊助？'%> </td>
+													<%when true %>
+															<% case done.confirm %>
+															<%when nil%>
+																	<td>尚未核對款項</td>
+																	<td> </td>
+															<%when true %>
+																	<td>已收到款項</td>
+																	<td> </td>
+															<%when false %>
+																	<td>尚未收到款項</td>
+																	<td> </td>
+															<% end %>
+													<% end %>
+		              </tr>
+		          <% end-%>
+		      </tbody>
+		  </table>
+  	</div>
+	</div>
+	
+</div>

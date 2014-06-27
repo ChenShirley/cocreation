@@ -1,0 +1,169 @@
+// Place all the styles related to the project controller here.
+// They will automatically be included in application.css.
+// You can use Sass (SCSS) here: http://sass-lang.com/
+
+a { text-decoration: none; color:#53868B;}
+a:hover {color:#CD2626}  
+
+img{
+	border:0px;
+}
+
+#show {
+margin: 0 auto;
+
+}
+#item {
+margin-right:7px;
+width:80px;
+height:30px;
+float:left;
+font-family: 微軟正黑體;
+}
+#item1 {
+margin-right:7px;
+width:100px;
+height:30px;
+float:left;
+font-family: 微軟正黑體;
+}
+#container {
+  clear:both;
+top:15px;
+width:80%;
+margin: 0 auto;
+padding-top:20px;
+border-top-style:solid;
+border-width:1px;
+border-color:#C0C0C0;
+}
+#id-item {
+width: 300px;
+background-color: white;
+margin: 10px;
+float:left;
+border-style:solid;
+border-color:white;
+border-width:15px;
+border-radius: 10px;
+box-shadow: 4px 4px 12px 4px rgba(20%,20%,40%,0.5);
+}
+#id-item-name {
+font-size: 15pt;
+color: #F07830;
+font-weight:bold;
+}
+#id-item img{
+width: 300px;
+}
+
+#topbar1 {
+text-align:center;
+height:40px;
+}
+
+#topbar2 {
+height:auto;
+background-color: red;
+margin-bottom:20px;
+vertical-align:middle;
+
+}
+#showname {
+margin-top:80px;
+height: 100px;
+width: 1000px;
+margin: 0 auto;
+font-size: 40pt;
+font-family: 微軟正黑體;
+text-align:center;
+color: #F07830;
+
+}
+#showcontext {
+  clear:both;
+width: 1000px;
+height: auto;
+margin: 0 auto;
+box-shadow: 0px 0px 12px 5px rgba(51, 51, 102, 0.5);
+border-radius: 10px;
+border-style:solid;
+border-width:20px;
+border-color:white;
+background-color: white;
+overflow:hidden;
+}
+#showmedia {
+width: 600px;
+
+}
+#showinfo {
+margin-top:10px;
+width: 350px;
+min-height: 150px;
+background-color:#F8E6D4;
+border-style: solid;
+border-color: #F8E6D4;
+border-width: 15px;
+border-radius: 10px; 
+font-size: 25pt;
+font-family: 微軟正黑體;
+}
+#showinfo a { color:white;}
+#showinfo a:hover {color:#CCCCCC} 
+#showteam {
+clear:both;
+margin-top:10px;
+width: 350px;
+height: auto;
+background-color:#F8E6D4;
+border-style: solid;
+border-color: #F8E6D4;
+border-width: 15px;
+border-radius: 10px; 
+font-family: 微軟正黑體;
+}
+#showfeedback {
+clear:both;
+margin-top:10px;
+width: 350px;
+height: auto;
+background-color:#F8E6D4;
+border-style: solid;
+border-color: #F8E6D4;
+border-width: 15px;
+border-radius: 10px; 
+font-family: 微軟正黑體;
+}
+
+#showInvest{
+clear:both;
+margin-top:10px;
+width: 350px;
+height: auto;
+background-color:#F8E6D4;
+border-style: solid;
+border-color: #F8E6D4;
+border-width: 15px;
+border-radius: 10px; 
+font-family: 微軟正黑體;
+overflow:hidden;
+}
+
+#showsummary {
+margin:0 auto;
+margin-top:10px;
+width: 600px;
+font-family:微軟正黑體;
+}
+
+#showMessage{
+  clear:both;
+  margin-top:10px;
+  font-family:微軟正黑體;
+  width: 900px;
+  margin:0 auto;
+  color:#696969;
+
+}
+

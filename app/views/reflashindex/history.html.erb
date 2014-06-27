@@ -1,0 +1,53 @@
+<% if @thispro.user_id==current_user.id %>
+	<div>
+		<center>
+			<%= form_for @thispro, :url => { :controller => 'reflashindex', :action => 'updateh' } do |f|
+
+
+ %>
+				<p>
+					<%= f.label  :topic, '主題：'%>
+					<%= f.text_field  :topic, :value=>""%>
+					</br>
+					<%= f.label  :history, '內容：'%></br>
+					<%= f.text_area  :history, :value=>""%>
+
+    			<%= f.hidden_field  :user_id, :value=>current_user.id%>
+    			<%= f.hidden_field  :presub_id, :value=>@thispro.presub_id%>
+    			<%= f.hidden_field  :pro_id, :value=>@thispro.id%>
+    			<%= f.hidden_field  :show, :value=>true %>
+
+				</p>
+			<%= f.submit '儲存並送出' %>
+			<% end%>
+		</center>
+	</div>
+<% end%>
+
+
+<% @post.each do |post| %>
+<%if post.show == true%>
+	<% if post.user_id==current_user.id %>
+		<a href=<%= "updatemail/"+@thispro.id.to_s+"/"+post.id %>>通知所有贊助者</a>
+	<% end%>
+
+	<center>
+		主題：<%= simple_format post.topic %>
+		時間：<%= post.created_at %>
+		內容：</br>
+			<%= simple_format post.history %>
+	
+		<div style="margin:0 auto; clear:both; border-top-style:dashed; border-width:1px; border-color:#838B8B; "></div>
+	</center>
+<% end%>
+<% end%>
+
+<script>
+	var ste = new SimpleTextEditor("content_history", "ste", "content[history]"); 
+	ste.cssFile = 'test.css'; 
+	ste.charset = 'iso-8859-1';
+	ste.init();
+	function tes(){
+		alert("sdsd");
+	}
+</script>

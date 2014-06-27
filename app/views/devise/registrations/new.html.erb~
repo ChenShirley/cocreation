@@ -1,0 +1,74 @@
+<style>
+#user_email{
+  border-radius:5px;
+  box-shadow:0px 0px 0.5px #000;
+  width:240px;
+}
+
+#user_password{
+	border-radius:5px;
+  box-shadow:0px 0px 0.5px #000;
+  width:240px;
+}
+
+#user_phone{
+	border-radius:5px;
+  box-shadow:0px 0px 0.5px #000;
+  width:240px;
+}
+
+#user_name{
+	border-radius:5px;
+  box-shadow:0px 0px 0.5px #000;
+  width:240px;
+}
+
+#user_password_confirmation{
+	border-radius:5px;
+  box-shadow:0px 0px 0.5px #000;
+  width:240px;
+}
+
+
+#SignUp{
+	margin: 0 auto;
+	border-radius: 10px; 
+	border-style:solid; 
+	border-color:white; 
+	border-width:15px; 
+	background-color: white;
+	width: 250px; 
+	height: auto; 
+	box-shadow: 4px 4px 12px 4px rgba(20%,20%,40%,0.5);
+	
+}
+</style>
+
+
+<div id="SignUp" >
+
+<h1>cocreation會員註冊</h1>
+<%= form_for(resource, :as => resource_name, :url => registration_path(resource_name)) do |f| %>
+  <%= devise_error_messages! %>
+
+  <div style="color: #8B4726"><%= f.label :email,'電子信箱' %><br />
+  <%= f.email_field :email, :autofocus => true %></div>
+
+  <div style="color: #8B4726"><%= f.label :name,'姓名' %><br />
+  <%= f.text_field :name %></div>
+
+  <div style="color: #8B4726"><%= f.label :phone,'電話' %><br />
+  <%= f.text_field :phone %></div>
+
+  <div style="color: #8B4726"><%= f.label :password,'密碼' %><br />
+  <%= f.password_field :password %></div>
+
+  <div style="color: #8B4726"><%= f.label :password_confirmation,'確認密碼' %><br />
+  <%= f.password_field :password_confirmation %></div>
+</br>
+  <div><%= f.submit "註冊" %></div>
+<% end %>
+
+<%= render "devise/shared/links" %>
+
+</div>

@@ -1,0 +1,40 @@
+<center>
+<div align="center">
+	<div id="myinvest">
+		【 贊助專案狀態 】
+		<hr style="width: 80%; border-color:#CCCCCC;border:0.5;">
+		<div id="projectUp" style=" width: 100%;">
+  		<table style="text-align: center;">
+		      <thead>
+	          <th>專案名稱</th>
+						<th>贊助金額</th>
+						<th>狀態</th>
+		      </thead>
+		      
+		      <tbody>
+		          <% @alldone.each do |done| %>
+		              <tr>
+			                <td><a href=<%= reflashindex_path(done.pro_id) %> title="查看專案內容"><%= done.pro.presub.name %></a></td>
+											<td>NTD$<%= number_with_delimiter(done.howmuch) %></td>
+			                		<% case done.remit %>
+													<%when nil%>
+															<td><%= link_to "匯款完成通知","remit/"+done.id.to_s %></td>
+													<%when true %>
+															<% case done.confirm %>
+															<%when nil%>
+																	<td>尚未核對款項</td>
+															<%when true %>
+																	<td>已收到款項</td>
+															<%when false %>
+																	<td>e未收到款項</td>
+															<% end %>
+													<% end %>
+		              </tr>
+		          <% end-%>
+		      </tbody>
+		  </table>
+  	</div>
+	</div>
+	
+</div>
+</center>

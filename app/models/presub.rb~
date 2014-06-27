@@ -1,0 +1,14 @@
+class Presub < ActiveRecord::Base
+  include ActiveModel::Validations
+attr_accessible :name, :classify, :goal, :intro, :summary, :feedbacks_attributes, :pic, :describe, :video, :version, :modify, :confirm, :teacheron, :user_id, :projectparam_id, :upfile_id
+  validates_presence_of :name, :classify, :goal, :intro, :summary
+  belongs_to :user
+  belongs_to :projectparam
+  has_one :pro, :dependent => :destroy
+  has_one :reason, :dependent => :destroy
+  has_many :questionforideas, :dependent => :destroy
+  has_many :votes, :dependent => :destroy
+	has_many :feedbacks, :dependent => :destroy
+	has_many :upfiles, :dependent => :destroy
+  accepts_nested_attributes_for :feedbacks, :allow_destroy => true
+end

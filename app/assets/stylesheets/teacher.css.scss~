@@ -1,0 +1,126 @@
+// Place all the styles related to the teacher controller here.
+// They will automatically be included in application.css.
+// You can use Sass (SCSS) here: http://sass-lang.com/
+img{
+	border:0px;
+}
+#index{	//index整頁
+padding-top:20px;
+  margin: 0px auto;
+  width:100%;
+  height:auto;
+
+}
+
+#index_notyet{	//未審核
+  margin:5px;
+  padding-top:5px;
+  float:left;
+  width:30%;
+  height: auto;
+  background-color:white;
+  border-style:solid;
+  border-color:white;
+  border-width:5px;
+  border-radius: 10px;
+  box-shadow: 4px 4px 12px 4px rgba(20%,20%,40%,0.5);
+}
+
+#index_request{
+  margin:5px;
+  padding-top:5px;
+  float:left;
+  width:32%;
+  height: auto;
+  background-color:white;
+  border-style:solid;
+  border-color:white;
+  border-width:5px;
+  border-radius: 10px;
+  box-shadow: 4px 4px 12px 4px rgba(20%,20%,40%,0.5);
+}
+
+#index_already{	//已上架
+  margin:5px;
+  padding-top:5px;
+  float:left;
+  width:30%;
+  height: auto;
+  background-color:white;
+  border-style:solid;
+  border-color:white;
+  border-width:5px;
+  border-radius: 10px;
+  box-shadow: 4px 4px 12px 4px rgba(20%,20%,40%,0.5);
+}
+
+//for edit
+#Mshowname {
+  margin-top:80px;
+  height: 70px;
+  margin: 0 auto;
+  font-size: 40pt;
+  font-family: 微軟正黑體;
+  text-align:center;
+  color: #F07830;
+
+}
+#Mshowemail{
+  clear:both;
+  margin:0 auto;
+  text-align:center;
+  font-family: 微軟正黑體; 
+  font-size:20px;
+  color:#607B8B;
+  margin-bottom:20px;
+}
+#Mshowcontext {
+  clear:both;
+  width: 1000px;
+  height: auto;
+  margin: 0 auto;
+  box-shadow: 0px 0px 12px 5px rgba(51, 51, 102, 0.5);
+  border-radius: 10px;
+  border-style:solid;
+  border-width:20px;
+  border-color:white;
+  background-color: white;
+  overflow:hidden;
+  
+}
+#Mshowmedia {
+  float: left;
+  width: 600px;
+  border-style: solid;
+  border-color: white;
+  border-width: 5px;
+}
+#Mshowinfo a { color:white;}
+#Mshowinfo a:hover {color:#CCCCCC} 
+#Mshowinfo {
+  margin-top:10px;
+  width: 350px;
+  min-height: 150px;
+  background-color:#F8E6D4;
+  border-style: solid;
+  border-color: #F8E6D4;
+  border-width: 15px;
+  border-radius: 10px; 
+  font-size: 30pt;
+  font-family: 微軟正黑體;
+}
+#Mshowteam, #Mshowfeedback {
+  clear:both;
+  margin-top:10px;
+  width: 350px;
+  height: auto;
+  background-color:#F8E6D4;
+  border-style: solid;
+  border-color: #F8E6D4;
+  border-width: 15px;
+  border-radius: 10px;
+  font-family: 微軟正黑體;
+}
+#Mshowsummary {
+  width: 600px;
+}

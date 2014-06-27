@@ -1,0 +1,36 @@
+<%= form_tag({:action=>'save_file'}, :multipart => true)%>  
+ <input type="file" name="picname" /> 
+ <input type="file" name="filename" /> 
+ <input type="submit" name="Upload" value="Upload"/>  
+</form>  
+
+
+<h1>Upfile#index</h1>  
+<%= form_tag({:action=>'save_file'}, :multipart => true)%>  
+ <input type="file" name="filename" /> 
+ <input type="file" name="picname" />  
+ <input type="submit" name="Upload" value="Upload"/>  
+</form>  
+<hr noshade width = "90%" color = "red" />  
+<table border=1>  
+<tr><td>檔名</td><td>格式</td><td>大小</td><td>日期</td></tr>  
+<% @files.each do |file| -%>  
+<tr>  
+<td><%= link_to file.filename, :action => 'dl', :filetoken => file.filetoken -%></td>  
+<td><%= file.filetype -%></td>  
+<td><%= file.size -%></td>  
+<td><%= file.created_at -%></td>  
+<% end -%>  
+</tr>  
+</table>  
+
+<img scr="/assets/rails.png"/>
+aaa
+<%= image_tag("rails.png") %>
+
+<iframe src="http://docs.google.com/viewer?url=http://cocreation.ctm.nthu.edu.tw/assets/intro70.pdf&embedded=true" width="600" height="780">
+</iframe>
+
+<iframe src="http://docs.google.com/viewer?url=http://0.0.0.0:3000/upfile/dl?filetoken=fcf9c3bbd65ec277b8d0e8864d9145eeda8389ac&embedded=true" width="600" height="780">
+</iframe>
+

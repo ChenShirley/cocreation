@@ -1,0 +1,38 @@
+<center>
+<div id="list">
+</br>
+	【 贊助名單 】
+	<hr style="width: 80%; border-color:#CCCCCC;border:0.5;">
+
+		<table style="text-align: center;">
+		    <thead>
+		      <th>專案名稱</th>
+		      <th>贊助者</th>
+					<th>贊助者信箱</th>
+					<th>贊助金額</th>
+					<th>確認款項</th>
+					<th>寄送信件</th>
+		    </thead>
+		    
+		    <tbody>
+		        <% @list.each do |all| %>
+		            <tr>
+			              <td><%= all.pro.presub.name%></td>
+			              <td><%= all.user.name %></td>
+			              <td><%= all.user.email %></td>
+			              <td>NTD$<%= number_with_delimiter(all.howmuch, delimiter: ",") %></td>
+			              		<% case all.confirm %>
+												<%when nil%>
+														<td>未審核</td>
+												<%when false %>
+														<td>未收到</td>
+												<%when true %>
+														<td>已確認</td>
+												<% end %>
+			              <td><a href=<%= "/sendmail/"+all.user.id.to_s %>>編輯信件內容</a></td>
+		            </tr>
+		    		<%end%>
+		    </tbody>
+		</table>
+</div>
+</center>

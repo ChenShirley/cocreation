@@ -1,0 +1,29 @@
+<center>
+<% if !@search.empty? %>
+		<div id="list">
+			【 會員查詢名單 】
+			<hr style="width: 80%; border-color:#CCCCCC;border:0.5;">
+				<table style="text-align: center;">
+						<thead>
+						  <th>會員名稱</th>
+						  <th>會員信箱</th>
+						</thead>
+						
+						<tbody>
+						    <% @search.each do |all| %>
+						        <tr>
+							          <td><%= all.name%></td>
+							          <td><%= all.email %></td>
+						        </tr>
+								<%end%>
+						</tbody>
+				</table>
+		</div>
+<% else %>
+		查無此人！</br>
+		此會員可能使用其他名稱或信箱註冊，請試試看其他會員名稱與信箱。</br>
+		如果此人尚未註冊成為會員，請先邀請他到平台註冊，才能讓他成為你的專案團隊成員之一唷！
+<% end %>
+
+<%= button_to "重新查詢", "/startaproject/param/search" %>
+</center>

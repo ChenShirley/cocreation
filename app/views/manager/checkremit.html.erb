@@ -1,0 +1,23 @@
+<div style="color:#696969;" id="content">
+  <%= form_tag manager_path(@check.id),:method=>:put  do %>
+        <div id="check">
+		    專案名稱：<%=@check.pro.presub.name%></br>
+				贊助人：<%=@check.user.name%></br>
+				贊助人聯絡資訊：<%=@check.user.email%></br>
+				贊助金額：NTD$<%= number_with_delimiter(@check.howmuch, delimiter: ",") %></br>
+				戶名：<%=@check.account_name%></br>
+				後五碼：<%=@check.account_num%></br>
+				匯款時間：<%=@check.time%></br>
+
+				<center>
+					<p>
+		      <%= label :invest, :confirm, '核對款項是否正確'%>
+		      <%= select :invest, :confirm,[nil,true,false]%>
+					</p>
+					<p>
+		      <%= submit_tag '確定'%>
+					</p>
+				</center>
+        </div>
+  <% end%>
+</div>

@@ -1,0 +1,6 @@
+class Reason < ActiveRecord::Base
+  attr_accessible :context, :presub_id, :user_id, :pro_id
+ 
+  belongs_to :user
+  belongs_to :presub
+end

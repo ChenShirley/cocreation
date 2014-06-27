@@ -1,0 +1,15 @@
+<div id="feedbackForm">
+<%= form_for @start, :url => { :action => 'fupdate' }, :html=>{ :onsubmit => "return confirm('修改完畢可回到 我的提案 ，點選專案名稱預覽\n確認後請記得點選送出審核通知，通知審核者來審核您的專案喔！');"} , :method=>:put do |f| %>
+  <%= f.error_messages %>
+  <p>
+    <%= '請增加回饋方案並填入金額及內容：'%></br>
+  </p>
+  <%= f.fields_for :feedbacks do |builder| %>
+    <%= render 'feedback_fields', :f => builder %>
+  <% end %>
+
+  <p><%= link_to_add_fields "增加回饋方案", f, :feedbacks %></p>
+
+ 	<p><%= f.submit "儲存" %></p>
+<% end %>
+</div>

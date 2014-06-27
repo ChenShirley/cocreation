@@ -1,0 +1,5 @@
+<%= form_tag({:action=>'save_file'}, :multipart => true)%>  
+ <input type="file" name="picname" /> 
+ <input type="file" name="filename" /> 
+ <input type="submit" name="Upload" value="Upload"/>  
+</form>  

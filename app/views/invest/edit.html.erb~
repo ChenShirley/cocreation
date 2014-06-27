@@ -1,0 +1,60 @@
+<div style="color:#696969;">
+	<h2>步驟一：確認贊助金額及回饋方案</h2>
+	<h3>您正準備贊助【<%= @thisp.presub.name%>】，請確認以下資訊</h3>
+	<p style="color:#8B3E2F;">專案名稱：<%= @thisp.presub.name%></p>
+	<p style="color:#8B3E2F;">目前募集：NTD$<%= number_with_delimiter(@thisp.got, delimiter: ",") %></p>
+	<p style="color:#8B3E2F;">您所選擇的贊助金額：NTD$<%= number_with_delimiter(@feedback.money, delimiter: ",") %></p>
+	<p style="color:#8B3E2F;">您所選擇的回饋方案：<%= simple_format @feedback.plan %></p>
+
+	<h3>為順利遞送回饋，請務必確實填寫以下聯絡資訊，以便專案負責人與您聯繫後續事宜</h3>
+  <%= form_tag invest_path(@thisp.id), :method=>:put do %>
+
+<!--
+        <%= label :invest, :showname, '請問您是否願意顯示您的姓名'%>
+        <%= radio_button :invest, :showname, '1', :checked=>"checked"%>是
+				<%= radio_button :invest, :showname, '0'%>否</br>
+        <%= label :invest, :showemail, '請問您是否願意顯示您的聯絡信箱'%>
+        <%= radio_button :invest, :showemail, '1', :checked=>"checked"%>是
+				<%= radio_button :invest, :showemail, '0'%>否</br>
+-->
+        <%= label :invest, :delivername, '收件姓名：'%>
+        <%= text_field :invest, :delivername %> </br>
+        <%= label :invest, :delivermail, '聯絡信箱：'%>
+        <%= text_field :invest, :delivermail, :value=>current_user.email %> </br>
+        <%= label :invest, :deliverphone, '聯絡電話：'%>
+        <%= text_field :invest, :deliverphone %> </br>
+        <%= label :invest, :deliveraddress, '寄件地址：'%>
+        <%= text_field :invest, :deliveraddress %> </br>
+        <%= label :invest, :memo, '備註欄位：'%>
+        <%= text_field :invest, :memo %> </br>
+
+				<%= hidden_field :invest, :howmuch, :value=>@feedback.money %>
+        <%= hidden_field :invest, :feedback_id, :value=>@feedback.id%>
+        <%= hidden_field :invest, :pro_id, :value=>@pro_id%>
+        <%= hidden_field :invest, :user_id, :value=>current_user.id%>
+
+</br>
+	<h2>步驟二：ATM匯款</h2>
+	<h3>Cocreation平台管理帳戶</h3>
+	Cocreation平台為國立清華大學服務科學研究所於2013年成立的實驗平台，在利用第三方支付作為付款管道之前，由服務科學研究所所長林福仁提供帳戶作為平台之管理帳戶</br>
+	如欲查看更詳細資訊，請查看平台的<%= link_to '關於我', project_whoami_path%></br>
+
+	<h3>以下為匯款資訊，請記錄下來並儘速匯出款項</br>
+	戶名：林福仁</br>
+	銀行：玉山銀行新竹分行</br>
+	帳戶：0060-968-405296</br></h3>
+
+</br>
+	<h2>步驟三：贊助注意事項</h2>
+＊匯款後，我該做什麼？我該如何知道匯款成功？</br>
+匯款後請回到Cocreation，至”我的專區”的”我的贊助”填寫匯款完成通知，通知後平台會於一日內審核（因為人工審核，請耐心等待），審核後平台會以信件通知匯款成功。</br>
+＊若專案未達目標，贊助款項將會如何？</br>
+若贊助的專案未在指定的時間內達到目標金額，就算失敗。一旦失敗，Cocreation平台會將贊助款項退還給您。</br>
+（退款方式：專案在失敗過後，Cocreation會寄信給您詢問退款帳號，其手續費由平台向提案人索取，故收到之退款為原贊助之金額。）</br>
+＊點選”送出”後，請儘速匯出款項，並記得<strong>回到平台的”我的贊助”填寫匯款完成通知，填寫內容為您的戶名、匯款帳號後五碼及匯款時間。</strong></br>
+＊若有需要，請列印此頁，確保自身利益，也紀錄匯款資訊。</br>
+
+<input name="submit" type="submit" value="送出", onclick="請確實詳細查看三個步驟，以確保您的權益！\n確定要贊助此專案？">
+        </div>
+  <% end%>
+</div>
